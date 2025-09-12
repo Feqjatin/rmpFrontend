@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-
+import RoutePage from './RoutePage.jsx'
 function App() {
   
 
   return (
     <>
-    <p>comming soon..</p>
+    
+        <RoutePage />
     </>
   );
 }
