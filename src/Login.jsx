@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import loginUser from "./api/loginUser";
+import {loginUser} from "./api/Auth";
+import {login,print} from "./redux/userReducer"
+import { useSelector, useDispatch } from 'react-redux'
 
-function Login() {
+function Login(props) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const user= useSelector((state) => state.user.userName);
+  const roles= useSelector((state) => state.user.roles);
   const [error,setError]=useState();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -28,6 +33,10 @@ function Login() {
           if(response.data !== null)
           {
              console.log("good login");
+             dispatch(login(response));
+            dispatch(print());
+              console.log(user);
+              props.setCount(props.count+1);
              navigate("/");
           }
           else{

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import makeNewUser from "./api/makeNewUser";
+import {makeNewUser} from "./api/Auth";
 import { Navigate, useNavigate } from "react-router-dom";
 function SignUp() {
   const [formData, setFormData] = useState({
