@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import  {getAllSkills,deleteSkill,createSkill } from "../api/Recruiter";
-function RecuiterSkill() {
+function RecruiterSkill() {
   const [loading, setLoading]=useState(false);
   const [data,setData]=useState([]);
   const [error,setError]=useState();
@@ -53,7 +53,7 @@ const handleAddSkill= async()=>{
   setNewSkill(false);
  setLoading(false);
 }
-
+  
 
   return (
     <div className="recuiter-skill">
@@ -106,7 +106,7 @@ const handleAddSkill= async()=>{
          </div>
       ):(
         <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold"> Recruiter-Skill</h1>
+        <h1 className="text-2xl font-bold"> ALL skills</h1>
         <button
         onClick={() => setNewSkill(true)}
         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition mr-30"
@@ -153,4 +153,4 @@ const handleAddSkill= async()=>{
     </div>
   );
 }
-export default RecuiterSkill;
+export default RecruiterSkill;

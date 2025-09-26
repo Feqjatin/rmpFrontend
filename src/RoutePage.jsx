@@ -13,7 +13,7 @@ function RoutePage (){
   const [count, setCount] = React.useState(0);
 return (<>
 <div>
-    <NavBar count={count}/>
+    <NavBar count={count} setCount={setCount}/>
   <Routes>
     <Route path="/" element={<HomeCommn />} />
     <Route path="/login" element={<Login setCount={setCount} count={count}/>} />

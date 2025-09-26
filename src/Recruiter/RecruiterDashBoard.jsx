@@ -1,6 +1,7 @@
 import { useState } from "react";
-import RecuiterJob from "./RecuiterJob";
-import RecuiterSkill from "./RecuiterSkill";
+import RecruiterJob from "./RecruiterJob";
+import RecruiterSkill from "./RecruiterSkill";
+import RecruiterCandidate from "./RecruiterCandidate";
 
 function RecruiterDashboard() {
   const [activePage, setActivePage] = useState("job");
@@ -8,9 +9,11 @@ function RecruiterDashboard() {
   const renderContent = () => {
     switch (activePage) {
       case "job":
-        return <RecuiterJob />;
+        return <RecruiterJob />;
       case "skill":
-        return <RecuiterSkill />;
+        return <RecruiterSkill />;
+      case "candidate":
+        return <RecruiterCandidate />;
       default:
         return <p>Select a section from the sidebar</p>;
     }
@@ -37,7 +40,10 @@ function RecruiterDashboard() {
             <button onClick={() => setActivePage("job")}> Manage Jobs</button>
           </li>
           <li className={handleStyle("skill")}>
-            <button onClick={() => setActivePage("skill")}>Manage skill</button>
+            <button onClick={() => setActivePage("skill")}>Manage skills</button> 
+          </li>
+          <li className={handleStyle("candidate")}>
+            <button onClick={() => setActivePage("candidate")}>Manage candidates</button>
           </li>
         </ul>
       </div>

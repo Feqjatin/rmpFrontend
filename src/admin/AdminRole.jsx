@@ -70,7 +70,7 @@ function AdminRole()
     return(
         <div className="p-6">
        <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold">Admin Role</h1>
+                <h1 className="text-2xl font-bold">ALL Roles</h1>
                 <button
                 onClick={() => setAddRole(true)}
                 className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition"

@@ -15,6 +15,10 @@ export const userSlice = createSlice({
         state.roles=action.payload.data.userRoles.map(r => r.roleName);
         console.log(state.roles);
     },
+    logout : (state)=>{
+        state.userName="Unknown";
+        state.roles={};
+    },
     print : (state)=>{
         console.log(state.userName);
         console.log(state.roles);
@@ -24,6 +28,6 @@ export const userSlice = createSlice({
 })
 
  
-export const { login,print } = userSlice.actions
+export const { login,print,logout } = userSlice.actions
 
 export default userSlice.reducer 

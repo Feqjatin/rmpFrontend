@@ -50,6 +50,7 @@ export async function getAllJobsbyUser(userName) {
 
 export async function createJob(formData) {
   try {
+    console.log("form data in api:", formData);
     const token = Cookies.get("token");
     const response = await fetch(`https://localhost:7084/api/Recruiter/job-create`, {
       method: "POST",
@@ -65,8 +66,8 @@ export async function createJob(formData) {
       return { data: null, msg: errorMsg };
     }
 
-    const data = await response.json();
-    return { data, msg: null };
+ 
+    return { data:response, msg: null };
   } catch (error) {
     console.error("create job error:", error);
     throw error;
@@ -90,8 +91,8 @@ export async function updateJob(formData) {
       return { data: null, msg: errorMsg };
     }
 
-    const data = await response.json();
-    return { data, msg: null };
+     
+    return { data:response, msg: null };
   } catch (error) {
     console.error("update job error:", error);
     throw error;
@@ -220,3 +221,121 @@ export async function deleteSkill(formData) {
     throw error;
   }
 }
+
+export async function deleteCandidate(id) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/candidate-delete/`+id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+     
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+
+    return { data: response, msg: null };
+  } catch (error) {
+    console.error("delete skill error:", error);
+    throw error;
+  }
+}
+
+export async function getAllCandidate() {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/candidate-all`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+     
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    return { data , msg: null };
+  } catch (error) {
+    console.error("delete skill error:", error);
+    throw error;
+  }
+}
+export async function getCandidateById(id) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/candidate/`+id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    return { data, msg: null };
+  } catch (error) {
+    console.error("delete skill error:", error);
+    throw error;
+  }
+}
+export async function updateCandidate(formData) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/candidate-update`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+
+    return { data: response, msg: null };
+  } catch (error) {
+    console.error("delete skill error:", error);
+    throw error;
+  }
+}
+
+export async function createCandidate(formData) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/candidate-create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+
+    return { data: response, msg: null };
+  } catch (error) {
+    console.error("delete skill error:", error);
+    throw error;
+  }
+} 

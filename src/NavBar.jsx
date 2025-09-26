@@ -1,26 +1,34 @@
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "./redux/userReducer";
 
-export default function NavBar({ count }) {
+export default function NavBar({ count ,setCount}) {
   const [logined, setLogined] = useState(false);
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.userName);
   const roles = useSelector((state) => state.user.roles);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setLogined(!!user);
+    
+    if(user && user !== "Unknown")setLogined(!!user);
   }, [user, count]);
 
   const handleLogout = () => {
     setLogined(false);
+
+      setCount(count+1);
+    Cookies.remove("token");
+    dispatch(logout());
     navigate("/login");
   };
 
   const getProfileImage = () => {
-    if (!user) return "/assets/avatars/A.png";
+    if (!user || user=='Unknown') return "/assets/user.png";
 
     const lastChar = user.trim().slice(-1).toUpperCase();
     const isLetter = /^[A-Z]$/.test(lastChar);
