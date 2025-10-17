@@ -1,19 +1,14 @@
 import { useState } from "react";
-import RecruiterJob from "./RecruiterJob";
-import RecruiterSkill from "./RecruiterSkill";
-import RecruiterCandidate from "./RecruiterCandidate";
+ import ReviewerJob from "./ReviewerJob";
 
-function RecruiterDashboard() {
+function ReviewerDashboard() {
   const [activePage, setActivePage] = useState("job");
 
   const renderContent = () => {
     switch (activePage) {
       case "job":
-        return <RecruiterJob />;
-      case "skill":
-        return <RecruiterSkill />;
-      case "candidate":
-        return <RecruiterCandidate />;
+        return <ReviewerJob />;
+      
       default:
         return <p>Select a section from the sidebar</p>;
     }
@@ -30,18 +25,15 @@ function RecruiterDashboard() {
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
     <div style={{ width: "200px", background: "#f4f4f4", padding: "20px", minHeight: "100vh" }}>
-      <h3>Recruiter Panel</h3>
+      <h3>Reviewer Panel</h3>
       <hr />
       <br />
       <ul style={{ listStyle: "none", padding: 0 }}>
         <li className={handleStyle("job")}>
-          <button onClick={() => setActivePage("job")}>Manage Jobs</button>
+          <button onClick={() => setActivePage("job")}>Review Jobs</button>
         </li>
-        <li className={handleStyle("skill")}>
-          <button onClick={() => setActivePage("skill")}>Manage skills</button>
-        </li>
-        <li className={handleStyle("candidate")}>
-          <button onClick={() => setActivePage("candidate")}>Manage candidates</button>
+        <li className={handleStyle("past")}>
+          <button onClick={() => setActivePage("job")}>Review Jobs</button>
         </li>
       </ul>
     </div>
@@ -52,4 +44,4 @@ function RecruiterDashboard() {
   );
 }
 
-export default RecruiterDashboard;
+export default ReviewerDashboard;

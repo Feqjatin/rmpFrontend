@@ -7,6 +7,7 @@ import NavBar from "./NavBar";
 import PrivateRoute from "./component/PrivateRoute";
 import AdminDashboard from "./admin/AdminDashboard";
 import RoleDetails from "./admin/RoleDetails";
+import ReviewerDashboard from "./Reviewer/ReviewerDashboard";
 import RecruiterDashboard from "./Recruiter/RecruiterDashBoard";
 
 function RoutePage (){
@@ -27,6 +28,9 @@ return (<>
     <Route element={<PrivateRoute allowedRoles={["recruiter"]} />}>
         <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
 
+    </Route>
+    <Route element={<PrivateRoute allowedRoles={["reviewer"]} />}>
+        <Route path="/reviewer/dashboard" element={<ReviewerDashboard />} />
     </Route>
   </Routes>
   </div>
