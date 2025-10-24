@@ -19,7 +19,7 @@ export async function getJobsToReview(username) {
       const data = await response.json();
       return { data, msg: null };
     } catch (error) {
-      console.error("delete skill error:", error);
+      console.error(" error:", error);
       throw error;
     }
   }
@@ -45,7 +45,58 @@ export async function getJobsToReview(username) {
       const data = await response.json();
       return { data, msg: null };
     } catch (error) {
-      console.error("delete skill error:", error);
+      console.error("error:", error);
+      throw error;
+    }
+  }
+
+
+
+  export async function updateApplicationsStatus(val) {
+    try {
+      console.log("updateApplicationsStatus payload:", val);
+      const token = Cookies.get("token");
+      const response = await fetch(`https://localhost:7084/api/Reviewer/bulk-update-status`, {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(val), 
+      });
+      console.log("response",response);
+      if (!response.ok) {
+        const errorMsg = await response.text();
+        return { data: null, msg: errorMsg };
+      }
+      const data = await response.json();
+      return { data, msg: null };
+    } catch (error) {
+      console.error("error:", error);
+      throw error;
+    }
+  }
+  export async function updateApplicationNote(val) {
+    try {
+      console.log("updateApplicationsStatus payload:", val);
+      const token = Cookies.get("token");
+      const response = await fetch(`https://localhost:7084/api/Reviewer/update-note`, {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(val), 
+      });
+      console.log("response",response);
+      if (!response.ok) {
+        const errorMsg = await response.text();
+        return { data: null, msg: errorMsg };
+      }
+      const data = await response.json();
+      return { data, msg: null };
+    } catch (error) {
+      console.error("error:", error);
       throw error;
     }
   }

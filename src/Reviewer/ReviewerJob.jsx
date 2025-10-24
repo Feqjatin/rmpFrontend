@@ -9,11 +9,12 @@ function RecruiterJob()
     const [loading, setLoading]=useState(false);
     const [data,setData]=useState([]);
     const [error,setError]=useState();
-    const [count,setCount]=useState(0);
+    const [countFor1,setCountFor1]=useState(0);
     const user= useSelector((state) => state.user.userName);
     const [page,setPage]=useState(1);
     const [selectedJobId,setSelectedJobId]=useState(null);
     const [selectedApplicationId,setSelectedApplicationId]=useState(null);
+    const [skillSet, setSkillSet] = useState([]);
     useEffect(()=>{
         async function fetchData(){
             setLoading(true);
@@ -34,15 +35,15 @@ function RecruiterJob()
         }
         fetchData();
     }
-    ,[count]);
+    ,[countFor1,page]);
   const handleClick=(jobid)=>{
    setSelectedJobId(jobid);
     setPage(2);
   }
     return(
       <>
-      {page==3&&  <ReviewerApplication initialReviewAction={selectedApplicationId} setPage={setPage} page={page}/>}
-      {page==2&& <ReviewerJobDetails jobId ={selectedJobId} setPage={setPage} page={page} setSelectedApplicationId={setSelectedApplicationId}/>}
+      {page==3&&  <ReviewerApplication initialReviewAction={selectedApplicationId} setPage={setPage} page={page} countFor1={countFor1} setCountFor1={setCountFor1} skillSet={skillSet} />}
+      {page==2&& <ReviewerJobDetails jobId ={selectedJobId} setPage={setPage} page={page} countFor1={countFor1} setCountFor1={setCountFor1} setSelectedApplicationId={setSelectedApplicationId} setSkillSet={setSkillSet}/>}
       {page==1&& 
         <div className="p-6">
         <h1 className="text-2xl font-bold mb-4">ALL jobs to Review</h1>

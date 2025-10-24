@@ -32,9 +32,7 @@ function ReviewerDashboard() {
         <li className={handleStyle("job")}>
           <button onClick={() => setActivePage("job")}>Review Jobs</button>
         </li>
-        <li className={handleStyle("past")}>
-          <button onClick={() => setActivePage("job")}>Review Jobs</button>
-        </li>
+         
       </ul>
     </div>
   

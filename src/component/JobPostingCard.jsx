@@ -3,6 +3,7 @@ import React from 'react';
 import { useEffect } from 'react';
  import { useState } from 'react';
  import { getJobDetails } from '../api/forAll';
+
  
  const LocationPinIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"   fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-gray-500">
@@ -33,7 +34,7 @@ import { useEffect } from 'react';
 
 
  
-const JobPostingCard = ({ jobid }) => {
+const JobPostingCard = ({ jobid, setSkillSet}) => {
  
     const [jobData, setJobData] = useState({});
     const [loading, setLoading]=useState(false);
@@ -55,6 +56,7 @@ const JobPostingCard = ({ jobid }) => {
             }
             else{
                 setError(null);
+            setSkillSet(response.data[0].skills);
             setData(response.data[0]);
             setJobData(response.data[0]);
             setLoading(false);
