@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { data } from "react-router-dom";
 export async function getJobDetails(jobid) {
     try {
 
@@ -76,3 +77,56 @@ export async function saveSkillAssessments(val) {
   }
 }
   
+
+    
+export async function getSkillAssessmentsForCandidate(val) {
+  try {
+     
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Util/getSkillAssessments/`+val, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+   console.log("response",response);
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    return { data:data, msg: null };
+  } catch (error) {
+    console.error("  error:", error);
+    throw error;
+  }
+}
+
+
+    
+export async function getFeedbackForApplication(val) {
+  try {
+     
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Util/feedback/`+val, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    return { data:data, msg: null };
+  } catch (error) {
+    console.error("  error:", error);
+    throw error;
+  }
+}

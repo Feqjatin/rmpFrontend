@@ -66,7 +66,8 @@ const SkillReview = ({
     jobSkills,            
     applicationId,       
     username,             
-    isPublished,          
+    isPublished,    
+    role,stage      
 }) => {
 
    
@@ -107,8 +108,8 @@ const SkillReview = ({
             applicationId,
             username,
             assessments: newOne,
-            stage:'REVIEWER_SKILL_ASSESSMENT',
-            role:'reviewer'
+            stage:stage,
+            role:role
         });
         if(response.msg !== null)
         {

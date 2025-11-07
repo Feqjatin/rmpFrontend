@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { updateApplicationsStatus } from '../api/Reviewer';
 import { updateApplicationNote } from '../api/Reviewer';
 import {crateApplicationComment} from '../api/forAll';
-import SkillReview from './SkillReview';
+import SkillReview from '../component/SkillReview';
 
 const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountFor1,skillSet  }) => {
     
@@ -82,8 +82,8 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
      }
    
     setLoading(false);
-        //setCountFor1(c => c + 1);
-       // setPage(2);
+        setCountFor1(c => c + 1);
+       setPage(2);
     };
 
  
@@ -216,6 +216,8 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
                                 applicationId={initialReviewAction.applicationId}
                                 username={user}
                                 isPublished={initialReviewAction.isPublished}
+                                stage={"REVIEWER_SKILL_ASSESSMENT"}
+                                role={"reviewer"}
                                 />
                       {!initialReviewAction.isPublished &&  
                     <div className="mt-6 border-t pt-6 space-y-3">

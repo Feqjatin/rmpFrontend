@@ -9,6 +9,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import RoleDetails from "./admin/RoleDetails";
 import ReviewerDashboard from "./Reviewer/ReviewerDashboard";
 import RecruiterDashboard from "./Recruiter/RecruiterDashBoard";
+import InterviewerDashboard from "./Interviewer/InterviewerDashboard";
 
 function RoutePage (){
   const [count, setCount] = React.useState(0);
@@ -31,6 +32,9 @@ return (<>
     </Route>
     <Route element={<PrivateRoute allowedRoles={["reviewer"]} />}>
         <Route path="/reviewer/dashboard" element={<ReviewerDashboard />} />
+    </Route>
+    <Route element={<PrivateRoute allowedRoles={["interviewer"]} />}>
+        <Route path="/interviewer/dashboard" element={<InterviewerDashboard />} />
     </Route>
   </Routes>
   </div>

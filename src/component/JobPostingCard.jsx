@@ -34,40 +34,10 @@ import { useEffect } from 'react';
 
 
  
-const JobPostingCard = ({ jobid, setSkillSet}) => {
- 
-    const [jobData, setJobData] = useState({});
+const JobPostingCard = ({ jobData}) => {
     const [loading, setLoading]=useState(false);
-    const [data,setData]=useState([]);
     const [error,setError]=useState();
-    const [count,setCount]=useState(0);
-    const [page,setPage]=useState(1);
-    const [selectedJobId,setSelectedJobId]=useState(null);
-    useEffect(()=>{
-        async function fetchData(){
-            setLoading(true);
-            const response= await  getJobDetails(jobid);
-            console.log("response",response.data);
-            if(response.data === null)
-            {
-                setData([]);
-                setError(response.msg);
-                setLoading(false);
-            }
-            else{
-                setError(null);
-            setSkillSet(response.data[0].skills);
-            setData(response.data[0]);
-            setJobData(response.data[0]);
-            setLoading(false);
-            }
-          
-        }
-        fetchData();
-    }
-    ,[count]);
 
-  
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -85,7 +55,7 @@ const JobPostingCard = ({ jobid, setSkillSet}) => {
   
     {!loading && jobData!= null && 
     <div className="max-w-2xl mx-auto my-8 p-6 bg-white rounded-2xl   border border-gray-200 font-sans" style={{background: "#dce9f2"}}>
-      
+      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm"> 
     
     <div className="flex items-start justify-between mb-4">
       <div className="flex items-center space-x-4">
@@ -163,6 +133,7 @@ const JobPostingCard = ({ jobid, setSkillSet}) => {
           </span>
       </div>
     )}
+  </div>
   </div>
           }
     </>

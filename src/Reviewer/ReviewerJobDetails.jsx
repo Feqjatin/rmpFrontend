@@ -5,6 +5,7 @@ import JobPostingCard from '../component/JobPostingCard';
 import { getApplicationsToReview } from '../api/Reviewer';
 import { useSelector } from 'react-redux'
 import { updateApplicationsStatus } from '../api/Reviewer';
+import { getJobDetails } from '../api/forAll';
 
 
 function ReviewerJobDetails({ jobId, setPage,page,countFor1 , setCountFor1, setSelectedApplicationId ,setSkillSet}) {
@@ -14,7 +15,7 @@ function ReviewerJobDetails({ jobId, setPage,page,countFor1 , setCountFor1, setS
   const [error, setError] = useState();
   const [count, setCount] = useState(0);  
   const [activeTab, setActiveTab] = useState('All');
-  
+  const [jobData, setJobData] = useState({});
  const user= useSelector((state) => state.user.userName);
   const [selectedApplicationIds, setSelectedApplicationIds] = useState([]);
 
@@ -25,7 +26,7 @@ function ReviewerJobDetails({ jobId, setPage,page,countFor1 , setCountFor1, setS
     async function fetchData() {
       setLoading(true);
       const response = await getApplicationsToReview(jobId);
-
+      const responseOfJobDetails= await  getJobDetails(jobId);
       if (!response || !response.data) {
         setData([]);
         setFilteredData([]);
@@ -34,6 +35,14 @@ function ReviewerJobDetails({ jobId, setPage,page,countFor1 , setCountFor1, setS
         setError(null);
         setData(response.data);
         setFilteredData(response.data);  
+      }
+      if(responseOfJobDetails.data === null)
+      {
+          setError(responseOfJobDetails.msg);
+      }
+      else{
+      setSkillSet(responseOfJobDetails.data[0].skills);
+      setJobData(responseOfJobDetails.data[0]);
       }
       setLoading(false);
     }
@@ -132,7 +141,7 @@ function ReviewerJobDetails({ jobId, setPage,page,countFor1 , setCountFor1, setS
      
     <div className="pb-24">
       <button onClick={() => setPage(1)} className="mb-4 text-blue-600 hover:text-blue-800 font-semibold">Back</button>
-      <JobPostingCard jobid={jobId} setSkillSet={setSkillSet}/>
+      <JobPostingCard jobData={jobData} />
       
       <div className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-2xl border border-gray-200 font-sans" style={{ background: "#dce9f2" }}>
         <div className="relative">
