@@ -33,12 +33,22 @@ function AdminDashboard() {
         <br />
         
         <ul style={{ listStyle: "none", padding: 0 }}>
-          <li className={handleStyle("users")}>
-            <button onClick={() => setActivePage("users")}> Manage Users</button>
+        <li
+          className={handleStyle("users")}
+          onClick={() => setActivePage("users")}
+          style={{ cursor: "pointer" }}
+        >
+          Manage User
+        </li>
+
+            <li
+            className={handleStyle("role")}
+            onClick={() => setActivePage("role")}
+            style={{ cursor: "pointer" }}
+          >
+            Manage role
           </li>
-          <li className={handleStyle("role")}>
-            <button onClick={() => setActivePage("role")}>Manage role</button>
-          </li>
+
         </ul>
       </div>
 

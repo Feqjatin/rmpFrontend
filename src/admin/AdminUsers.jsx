@@ -40,7 +40,9 @@ function AdminUsers()
     }
     return(
         <div className="p-6">
+          <div className=" border-b mb-4">
         <h1 className="text-2xl font-bold mb-4">ALL Users</h1>
+        </div>
       
         {loading && <p className="text-blue-500">Loading...</p>}
         {error && <p className="text-red-500">{error}</p>}

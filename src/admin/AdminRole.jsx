@@ -65,21 +65,23 @@ function AdminRole()
     }
     const handleSeeMoreRoleId= ()=>{
         console.log("see more",seeMoreRoleId);
-       return  <RoleDetails role={seeMoreRoleId}/>
+       return  <RoleDetails role={seeMoreRoleId} setSeeMoreRoleId={setSeeMoreRoleId}/>
     }
     return(
         <div className="p-6">
-       <div className="flex justify-between items-center mb-4">
+       {seeMoreRoleId ==null &&  
+       <div className=" border-b mb-4"><div className="flex justify-between items-center mb-4 ">
                 <h1 className="text-2xl font-bold">ALL Roles</h1>
-                <button
+                {addRole== false && <button
                 onClick={() => setAddRole(true)}
                 className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
                 >
                 ADD ROLE
-                </button>
-            </div>
+                </button>}
+               </div>
+            </div>}
 
-                  
+                 
         {loading && <p className="text-blue-500">Loading...</p>}
         {error && <p className="text-red-500">{error}</p>}
         {addRole && (
@@ -114,6 +116,8 @@ function AdminRole()
                           Add Role
                         </button>
                       </div>
+                      <br />
+                    
                       </>
                     
                     )}

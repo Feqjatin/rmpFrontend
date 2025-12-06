@@ -190,8 +190,8 @@ export async function updateSkill(formData) {
       return { data: null, msg: errorMsg };
     }
 
-    const data = await response.json();
-    return { data, msg: null };
+     
+    return { data:response, msg: null };
   } catch (error) {
     console.error("update skill error:", error);
     throw error;

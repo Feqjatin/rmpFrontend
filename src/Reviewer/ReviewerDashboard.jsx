@@ -29,9 +29,14 @@ function ReviewerDashboard() {
       <hr />
       <br />
       <ul style={{ listStyle: "none", padding: 0 }}>
-        <li className={handleStyle("job")}>
-          <button onClick={() => setActivePage("job")}>Review Jobs</button>
-        </li>
+      <li
+            className={handleStyle("job")}
+            onClick={() => setActivePage("job")}
+            style={{ cursor: "pointer" }}
+          >
+          Review Jobs
+          </li>
+        
          
       </ul>
     </div>

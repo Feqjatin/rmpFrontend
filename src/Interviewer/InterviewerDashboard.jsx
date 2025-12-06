@@ -30,10 +30,15 @@ function InterviewerDashboard() {
       <hr />
       <br />
       <ul style={{ listStyle: "none", padding: 0 }}>
-        <li className={handleStyle("interview")}>
-          <button onClick={() => setActivePage("interview")}>Manage interview</button>
-        </li>
          
+        
+        <li
+            className={handleStyle("interview")}
+            onClick={() => setActivePage("interview")}
+            style={{ cursor: "pointer" }}
+          >
+            Manage interview
+          </li>
       </ul>
     </div>
   

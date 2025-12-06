@@ -72,7 +72,8 @@ function RecruiterJob() {
         />
       ) : (
         <>
-          <div className="flex justify-between items-center mb-6">
+         <div className=" border-b mb-4">
+          <div className="flex justify-between items-center mb-4">
             <h1 className="text-3xl font-bold">Job Openings created by you</h1>
             <button
               onClick={() => setAddJob(true)}
@@ -80,6 +81,7 @@ function RecruiterJob() {
             >
               ADD JOB
             </button>
+          </div>
           </div>
 
           {!loading && data.length === 0 && (
@@ -91,7 +93,7 @@ function RecruiterJob() {
               {data.map((job) => (
                 <div
                   key={job.jobId}
-                  className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-start transition-transform transform hover:scale-105"
+                  className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-start transition-transform transform hover:scale-105 border border-gray-200"
                 >
                   <div className="flex items-center mb-4">
                     <img

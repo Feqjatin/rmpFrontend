@@ -130,3 +130,8 @@ export async function getFeedbackForApplication(val) {
     throw error;
   }
 }
+
+   
+export async function uploadFileToThirdParty(val) {
+  return {data:"https:123.com"};
+}

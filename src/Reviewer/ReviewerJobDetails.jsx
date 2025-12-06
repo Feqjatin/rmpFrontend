@@ -140,7 +140,17 @@ function ReviewerJobDetails({ jobId, setPage,page,countFor1 , setCountFor1, setS
   return (
      
     <div className="pb-24">
-      <button onClick={() => setPage(1)} className="mb-4 text-blue-600 hover:text-blue-800 font-semibold">Back</button>
+      
+       <div className="flex items-center gap-2" onClick={() => setPage(1)}>
+        <img src="../back.png" height="10" width="10" />
+        <button 
+           
+          className="text-blue-600 hover:text-blue-800 font-semibold"
+        >
+          Back
+        </button>
+      </div>
+      
       <JobPostingCard jobData={jobData} />
       
       <div className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-2xl border border-gray-200 font-sans" style={{ background: "#dce9f2" }}>
@@ -287,6 +297,8 @@ function ReviewerJobDetails({ jobId, setPage,page,countFor1 , setCountFor1, setS
           </div>
         </div>
       )}
+       
+
     </div>
   );
 }

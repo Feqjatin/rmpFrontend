@@ -82,9 +82,7 @@ const RecruiterCandidate = () => {
     }
 
     return (
-        <div className="p-8 bg-gray-100 min-h-screen">
-            <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-md">
-                <div className="p-6 border-b flex justify-between items-center">
+           <><div className="p-4 border-b flex justify-between items-center">
                     <h1 className="text-2xl font-bold text-gray-800">All Candidates</h1>
                     <button
                         onClick={() => setAddCandidate(true)}
@@ -102,7 +100,7 @@ const RecruiterCandidate = () => {
                     ) : candidates.length === 0 ? (
                         <p>No candidates found.</p>
                     ) : (
-                        <div className="overflow-x-auto shadow-md rounded-lg">
+                        <div className="overflow-x-auto shadow-md rounded-md">
                             <table className="min-w-full table-auto border-collapse border border-gray-300">
                                 <thead className="bg-gray-100">
                                     <tr>
@@ -138,13 +136,13 @@ const RecruiterCandidate = () => {
                                                         setShowDetails(true);
                                                         setSelectedCandidateId(candidate.candidateId);
                                                     }}
-                                                    className="text-blue-600 hover:underline text-sm font-medium"
+                                                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
                                                 >
                                                     See More
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(candidate.candidateId)}
-                                                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition text-sm font-medium"
+                                                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                                                 >
                                                     DELETE
                                                 </button>
@@ -156,8 +154,7 @@ const RecruiterCandidate = () => {
                         </div>
                     )}
                 </div>
-            </div>
-        </div>
+                </>
     );
 };
 

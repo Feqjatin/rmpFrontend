@@ -4,6 +4,8 @@ import { updateApplicationsStatus } from '../api/Reviewer';
 import { updateApplicationNote } from '../api/Reviewer';
 import {crateApplicationComment} from '../api/forAll';
 import SkillReview from '../component/SkillReview';
+import ApplicationFeedbackHistory from '../component/ApplicationFeedbackHistory';
+import CandidateSkillHistory from '../component/CandidateSkillHistory';
 
 const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountFor1,skillSet  }) => {
     
@@ -17,7 +19,7 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
     const [applicationComment, setApplicationComment] = useState('');
     
 
-
+  console.log("Initial Review Action:",initialReviewAction);
    const  handleSaveComment= async()=>{
     setLoading(true);
     const response = await crateApplicationComment({applicationId:initialReviewAction.applicationId,username:user, comment: applicationComment,role:"reviewer"});
@@ -111,7 +113,15 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
 
     return (
         <>
-        <button onClick={() => setPage(2)} className="mb-4 text-blue-600 hover:text-blue-800 font-semibold">Back</button>
+       <div className="flex items-center gap-2" onClick={() => setPage(2)}>
+        <img src="../back.png" height="10" width="10" />
+        <button 
+           
+          className="text-blue-600 hover:text-blue-800 font-semibold"
+        >
+          Back
+        </button>
+      </div>
         <div className="flex flex-col md:flex-row bg-gray-100 min-h-screen font-sans">
         
             <div className="flex-grow md:w-2/3 p-4">
@@ -238,6 +248,8 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
                 </div>
             </div>}
         </div>
+        <ApplicationFeedbackHistory applicationId={initialReviewAction.applicationId} />
+       <CandidateSkillHistory candidateId={initialReviewAction.candidateId} applicationId={initialReviewAction.applicationId} /> 
         </>
     );
 };

@@ -3,7 +3,7 @@ import { getAllUserBYRole } from "../api/Admin";
 import { deleteUserToRole } from "../api/Admin";
 import { getAllUsers } from "../api/Admin";
 import { assignRole } from "../api/Admin";
-function RoleDetails({ role }) {
+function RoleDetails({ role, setSeeMoreRoleId}) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
@@ -89,22 +89,47 @@ function RoleDetails({ role }) {
      setAddUserInput("");
     setLoading(false);
   }
+  const handleGoBack=()=>{
+    setSeeMoreRoleId(null);
+  }
   return (
-    <div>
-      {role?(      
-         <>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Role Details</h2>
- 
-            <p>
-              <span className="font-semibold">Role ID:</span> {role.roleId}
-            </p>
-            <p>
-              <span className="font-semibold">Role Name:</span> {role.roleName}
-            </p>
-            <p>
-              <span className="font-semibold">Description:</span> {role.description}
-            </p>
-         </>):(<p className="text-red-500">No role selected.</p>)}
+    <div> 
+    
+    <div className="flex items-center gap-2" onClick={handleGoBack}>
+        <img src="../back.png" height="10" width="10" />
+        <button 
+           
+          className="text-blue-600 hover:text-blue-800 font-semibold"
+        >
+          Back
+        </button>
+      </div>
+      {role ? (
+  <>
+    <h2 className="text-2xl font-bold text-gray-800 mb-4">Role Details</h2>
+
+    <div className="space-y-2">
+      <div className="flex">
+        <span className="font-semibold w-32">Role ID:</span>
+        <span>{role.roleId}</span>
+      </div>
+
+      <div className="flex">
+        <span className="font-semibold w-32">Role Name:</span>
+        <span>{role.roleName}</span>
+      </div>
+
+      <div className="flex">
+        <span className="font-semibold w-32">Description:</span>
+        <span>{role.description}</span>
+      </div>
+    </div>
+  </>
+) : (
+  <p className="text-red-500">No role selected.</p>
+)}
+
+
 
           {error && <p className="text-red-500 mt-2">{error}</p>}
           
@@ -114,16 +139,18 @@ function RoleDetails({ role }) {
               value={addUserInput}
               onChange={(e) => setAddUserInput(e.target.value)}
               placeholder="Search user..."
-              className="flex-1 p-2 border rounded-md"
+              className="flex-1 p-2 border rounded-md border-gray-300"
             />
             <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" onClick={handleAssign}>
               Assign
             </button>
+            
           </div>
-
+    
 
        {addUserInput.length>=1 && (filteredUsers.length>0 ?( 
-       <ul className="mt-2 border rounded-md bg-gray-200 shadow">
+       <ul className="mt-2 border  shadow">
+         
           {filteredUsers.map((user) => (
             <li
               key={user.userId}
@@ -137,7 +164,7 @@ function RoleDetails({ role }) {
           <p className="mt-2 border rounded-md bg-gray-200 shadow">No users found As mentioned</p>
         )
         )}
-       
+        <br />
       
 
       {loading && <p>Loading...</p>}
@@ -150,23 +177,23 @@ function RoleDetails({ role }) {
           <table className="min-w-full table-auto border-collapse border border-gray-300">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-4 py-2 border">ID</th>
-                <th className="px-4 py-2 border">Username</th>
-                <th className="px-4 py-2 border">Email</th>
-                <th className="px-4 py-2 border">Phone</th>
-                <th className="px-4 py-2 border">Status</th>
-                <th className="px-4 py-2 border">Action</th>
+                <th className="px-4 py-2 border border-gray-300">ID</th>
+                <th className="px-4 py-2 border border-gray-300">Username</th>
+                <th className="px-4 py-2 border border-gray-300">Email</th>
+                <th className="px-4 py-2 border border-gray-300">Phone</th>
+                <th className="px-4 py-2 border border-gray-300">Status</th>
+                <th className="px-4 py-2 border border-gray-300">Action</th>
               </tr>
             </thead>
             <tbody>
               {data.map((user) => (
                 <tr key={user.userId} className="hover:bg-gray-50">
-                  <td className="px-4 py-2 border">{user.userId}</td>
-                  <td className="px-4 py-2 border">{user.username}</td>
-                  <td className="px-4 py-2 border truncate">{user.email}</td>
-                  <td className="px-4 py-2 border">{user.phone}</td>
-                  <td className="px-4 py-2 border">{user.status}</td>
-                  <td className="px-4 py-2 border text-center">
+                  <td className="px-4 py-2 border border-gray-300">{user.userId}</td>
+                  <td className="px-4 py-2 border border-gray-300">{user.username}</td>
+                  <td className="px-4 py-2 border border-gray-300 truncate">{user.email}</td>
+                  <td className="px-4 py-2 border border-gray-300">{user.phone}</td>
+                  <td className="px-4 py-2 border border-gray-300">{user.status}</td>
+                  <td className="px-4 py-2 border border-gray-300 text-center">
                     <button
                       onClick={() => handleDeleteUser(user.userId)}
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"

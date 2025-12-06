@@ -124,8 +124,7 @@ const JobView = ({ job, goBack }) => {
       );
     
       return (
-        <div className="w-full">
-          <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-start transition-transform">
+         <>
             <div className="flex justify-between items-center w-full mb-6">
               <button
                 onClick={goBack}
@@ -135,7 +134,7 @@ const JobView = ({ job, goBack }) => {
                 Back
               </button>
               <h1 className="text-3xl font-bold text-center text-gray-800 flex-grow">Job Details</h1>
-              <div></div>
+               
             </div>
             
             <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -256,8 +255,7 @@ const JobView = ({ job, goBack }) => {
                 </>
               )}
             </div>
-          </div>
-        </div>
+          </>
       );
     };
     

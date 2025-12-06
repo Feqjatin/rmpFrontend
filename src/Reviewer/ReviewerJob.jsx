@@ -46,7 +46,8 @@ function RecruiterJob()
       {page==2&& <ReviewerJobDetails jobId ={selectedJobId} setPage={setPage} page={page} countFor1={countFor1} setCountFor1={setCountFor1} setSelectedApplicationId={setSelectedApplicationId} setSkillSet={setSkillSet}/>}
       {page==1&& 
         <div className="p-6">
-        <h1 className="text-2xl font-bold mb-4">ALL jobs to Review</h1>
+        <div className=" border-b mb-4"><h1 className="text-2xl font-bold mb-4">ALL jobs to Review</h1>
+        </div>
       
         {loading && <p className="text-blue-500">Loading...</p>}
         {error && <p className="text-red-500">{error}</p>}
@@ -65,7 +66,7 @@ function RecruiterJob()
                   <th className="px-4 py-2 border border-gray-300">new </th>
                   <th className="px-4 py-2 border border-gray-300">published </th>
                   <th className="px-4 py-2 border border-gray-300">total </th>
-                 
+                  <th  className="px-4 py-2 border border-gray-300"> </th>
                 </tr>
               </thead>
               <tbody>
@@ -76,15 +77,19 @@ function RecruiterJob()
                     className="hover:bg-gray-50 transition"
                   >
                     
-                    <td className="px-4 py-2 border border-gray-300"> <button onClick={(e)=>{handleClick(a.jobId)}}>{a.jobId}</button></td>
-                    <td className="px-4 py-2 border border-gray-300"> <button onClick={(e)=>{handleClick(a.jobId)}}>{a.jobTitle}</button></td>
+                    <td className="px-4 py-2 border border-gray-300"> {a.jobId}</td>
+                    <td className="px-4 py-2 border border-gray-300"> {a.jobTitle} </td>
                     <td className="px-4 py-2 border border-gray-300 ">{a.accepted}</td>
                     <td className="px-4 py-2 border border-gray-300">{a.rejected}</td>
                     <td className="px-4 py-2 border border-gray-300">{a.onHold}</td>
                     <td className="px-4 py-2 border border-gray-300">{a.new}</td>
-                    <td className="px-4 py-2 border border-gray-300">{a.published }</td>
-                    <td className="px-4 py-2 border border-gray-300">{a.total }</td>
-                   
+                    <td className="px-4 py-2 border border-gray-300">{a.published}</td>
+                    <td className="px-4 py-2 border border-gray-300">{a.total}</td>
+                    <td className="px-4 py-2 border border-gray-300">
+                      <button onClick={(e)=>{handleClick(a.jobId)}}
+                      className="bg-blue-500 text-white px-3 py-1 rounded"
+                      >See More</button>
+                  </td>
                   </tr>  
                 ))}
               </tbody>

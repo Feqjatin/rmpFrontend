@@ -34,15 +34,30 @@ function RecruiterDashboard() {
       <hr />
       <br />
       <ul style={{ listStyle: "none", padding: 0 }}>
-        <li className={handleStyle("job")}>
-          <button onClick={() => setActivePage("job")}>Manage Jobs</button>
+
+      <li
+          className={handleStyle("job")}
+          onClick={() => setActivePage("job")}
+          style={{ cursor: "pointer" }}
+        >
+          Manage Jobs
         </li>
-        <li className={handleStyle("skill")}>
-          <button onClick={() => setActivePage("skill")}>Manage skills</button>
+
+        <li
+          className={handleStyle("skill")}
+          onClick={() => setActivePage("skill")}
+          style={{ cursor: "pointer" }}
+        >
+          Manage skills
+        </li> 
+        <li
+          className={handleStyle("candidate")}
+          onClick={() => setActivePage("candidate")}
+          style={{ cursor: "pointer" }}
+        >
+          Manage candidates
         </li>
-        <li className={handleStyle("candidate")}>
-          <button onClick={() => setActivePage("candidate")}>Manage candidates</button>
-        </li>
+      
       </ul>
     </div>
   

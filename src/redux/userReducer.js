@@ -2,7 +2,8 @@ import { createSlice  } from '@reduxjs/toolkit'
 
 const initialState = {
   userName: "Unknown",
-  roles:{}
+  roles:{},
+  Id:-1
 }
 
 export const userSlice = createSlice({
@@ -12,6 +13,10 @@ export const userSlice = createSlice({
     login : (state,action)=>{
         console.log(action.payload.data.userRoles.map(r => r.roleName));
         state.userName=action.payload.data.username;
+        if(action.payload.data.candidateId!=null){
+          state.Id=action.payload.data.candidateId;
+        }
+        console.log(action.payload.data.candidateId);
         state.roles=action.payload.data.userRoles.map(r => r.roleName);
         console.log(state.roles);
     },
