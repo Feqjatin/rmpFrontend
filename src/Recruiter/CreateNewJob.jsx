@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
- import { getAllSkills } from '../api/Recruiter';
- import{createJob} from '../api/Recruiter';
+import { getAllSkills } from '../api/Recruiter';
+import { createJob } from '../api/Recruiter';
 import { useSelector } from 'react-redux';
- 
 
-const CreateNewJob = ({ goBack }) => {
-    const user = useSelector((state) => state.user.userName);
+const CreateNewJob = ({ goBack,refreshList }) => {
+  const user = useSelector((state) => state.user.userName);
   const [formData, setFormData] = useState({
-    Username:user,
+    Username: user,
     title: '',
     description: '',
     location: '',
     status: 'Open',
+    closedReason: null,
     minExperience: 0,
     skills: [],
   });
@@ -56,16 +56,32 @@ const CreateNewJob = ({ goBack }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({ ...prevData, [name]: value }));
+    setFormData(prevData => {
+      const updates = { [name]: value };
+      // Clear closedReason if status changes to Open
+      if (name === 'status' && value === 'Open') {
+        updates.closedReason = null;
+      }
+      return { ...prevData, ...updates };
+    });
   };
 
-  const handleAddSkill = (selectedSkill) => {
-    const newSkill = { ...selectedSkill, skillType: 'Required' };
+  const handleAddSkill = (selectedSkill, skillType) => {
+    const newSkill = { ...selectedSkill, skillType };
     setFormData(prevData => ({
       ...prevData,
       skills: [...prevData.skills, newSkill]
     }));
     setSkillSearchInput('');
+  };
+
+  const handleSkillTypeChange = (skillId, newType) => {
+    setFormData(prevData => ({
+      ...prevData,
+      skills: prevData.skills.map(skill =>
+        skill.skillId === skillId ? { ...skill, skillType: newType } : skill
+      )
+    }));
   };
 
   const handleDeleteSkill = (skillId) => {
@@ -81,6 +97,7 @@ const CreateNewJob = ({ goBack }) => {
       description: '',
       location: '',
       status: 'Open',
+      closedReason: null,
       minExperience: 0,
       skills: [],
     });
@@ -89,19 +106,20 @@ const CreateNewJob = ({ goBack }) => {
 
   const handleCreateClick = async () => {
     const transformedSkills = formData.skills.map(skill => ({
-        Id: skill.skillId,
-        Type: skill.skillType
+      Id: skill.skillId,
+      Type: skill.skillType
     }));
-    
+
     const dataToCreate = {
-        ...formData,
-        skills: transformedSkills
+      ...formData,
+      skills: transformedSkills
     };
 
     const response = await createJob(dataToCreate);
     console.log(response);
     if (response.data) {
       console.log('Creation successful!');
+      refreshList();
       goBack();
     } else {
       console.error('Creation failed.');
@@ -121,6 +139,8 @@ const CreateNewJob = ({ goBack }) => {
     </div>
   );
 
+  const isStatusClosed = formData.status === 'Temporary Close' || formData.status === 'Permanent Close';
+
   return (
     <div className="w-full">
       <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-start transition-transform">
@@ -135,15 +155,43 @@ const CreateNewJob = ({ goBack }) => {
           <h1 className="text-3xl font-bold text-center text-gray-800 flex-grow">Create New Job</h1>
           <div></div>
         </div>
-        
+
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex flex-col mb-4">
+          <div className="flex flex-col">
             {renderField('Title', 'title', 'text')}
-            {renderField('Status', 'status', 'text')}
+            
+            <div className="flex flex-col mb-4">
+              <label className="text-gray-600 font-semibold mb-1">Status:</label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner"
+              >
+                <option value="Open">Open</option>
+                <option value="Temporary Close">Temporary Close</option>
+                <option value="Permanent Close">Permanent Close</option>
+              </select>
+            </div>
+
+            {isStatusClosed && (
+              <div className="flex flex-col mb-4">
+                <label className="text-gray-600 font-semibold mb-1">Closed Reason:</label>
+                <textarea
+                  name="closedReason"
+                  value={formData.closedReason || ''}
+                  onChange={handleInputChange}
+                  rows="3"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner"
+                  placeholder="Please provide a reason for closing..."
+                />
+              </div>
+            )}
+
             {renderField('Min. Experience', 'minExperience', 'number')}
             {renderField('Location', 'location', 'text')}
           </div>
-          <div className="flex flex-col mb-4">
+          <div className="flex flex-col">
             <div className="flex flex-col mb-4 col-span-full">
               <label className="text-gray-600 font-semibold mb-1">Description:</label>
               <textarea
@@ -154,7 +202,7 @@ const CreateNewJob = ({ goBack }) => {
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner"
               />
             </div>
-            
+
             <div className="col-span-full mt-4 border-t pt-6 border-gray-200">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Skills</h2>
               {loading ? (
@@ -165,21 +213,28 @@ const CreateNewJob = ({ goBack }) => {
                 <div className="flex flex-wrap gap-2">
                   {formData.skills && formData.skills.map((skill) => (
                     <div key={skill.skillId} className="flex items-center px-3 py-1 rounded-full border border-gray-300 bg-gray-100 shadow-sm">
-                      <span className="text-sm font-medium text-gray-800">
+                      <span className="text-sm font-medium text-gray-800 mr-2">
                         {skill.skillName}
                       </span>
+                      <select
+                        value={skill.skillType}
+                        onChange={(e) => handleSkillTypeChange(skill.skillId, e.target.value)}
+                        className="text-xs border border-gray-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-blue-500 mr-1"
+                      >
+                        <option value="Required">Required</option>
+                        <option value="Preferred">Preferred</option>
+                      </select>
                       <button
                         onClick={() => handleDeleteSkill(skill.skillId)}
-                        className="ml-2 text-red-500 hover:text-red-700 transition-colors"
+                        className="ml-1 text-red-500 hover:text-red-700 transition-colors"
                       >
-                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                       </button>
                     </div>
                   ))}
                 </div>
               )}
-  
-  
+
               <div className="mt-6">
                 <h3 className="text-lg font-semibold text-gray-700 mb-2">Add New Skill</h3>
                 <div className="relative">
@@ -196,10 +251,25 @@ const CreateNewJob = ({ goBack }) => {
                         filteredSkills.map((skill) => (
                           <li
                             key={skill.skillId}
-                            onClick={() => handleAddSkill(skill)}
-                            className="p-3 cursor-pointer hover:bg-gray-100 transition-colors duration-200"
+                            className="p-3 hover:bg-gray-50 transition-colors duration-200"
                           >
-                            {skill.skillName}
+                            <div className="flex items-center justify-between">
+                              <span className="text-gray-800">{skill.skillName}</span>
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => handleAddSkill(skill, 'Required')}
+                                  className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                >
+                                  Required
+                                </button>
+                                <button
+                                  onClick={() => handleAddSkill(skill, 'Preferred')}
+                                  className="px-3 py-1 text-sm bg-gray-400 text-white rounded hover:bg-gray-500 transition"
+                                >
+                                  Preferred
+                                </button>
+                              </div>
+                            </div>
                           </li>
                         ))
                       ) : (

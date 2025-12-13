@@ -63,12 +63,15 @@ function RecruiterJob() {
             setSeeMore(false);
             setSelectedJob(null);
           }}
+
+          refreshList={() => setCount(count + 1)} 
         />
       ) : addJob ? (
         <CreateNewJob
           goBack={() => {
             setAddJob(false);
           }}
+          refreshList={() => setCount(count + 1)}
         />
       ) : (
         <>

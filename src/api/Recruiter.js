@@ -50,7 +50,7 @@ export async function getAllJobsbyUser(userName) {
 
 export async function createJob(formData) {
   try {
-    console.log("form data in api:", formData);
+    console.log("form data in api job create:", formData);
     const token = Cookies.get("token");
     const response = await fetch(`https://localhost:7084/api/Recruiter/job-create`, {
       method: "POST",
@@ -76,6 +76,7 @@ export async function createJob(formData) {
 
 export async function updateJob(formData) {
   try {
+    console.log("form data in api:", formData);
     const token = Cookies.get("token");
     const response = await fetch(`https://localhost:7084/api/Recruiter/job-update`, {
       method: "POST",
@@ -339,3 +340,228 @@ export async function createCandidate(formData) {
     throw error;
   }
 } 
+
+
+export async function getApplicationsByJobId(id) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Util/getApplicationByJob/`+id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    return { data, msg: null };
+  } catch (error) {
+    console.error(" error:", error);
+    throw error;
+  }
+}
+export async function getMatchByJobId(id) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Util/getMatchByJob/`+id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    console.log("matches data:", data);
+    return { data, msg: null };
+  } catch (error) {
+    console.error(" error:", error);
+    throw error;
+  }
+}
+
+export async function getReviewersByJobId(id) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/getAllReviewerByJob/`+id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    console.log(" data:", data);
+    return { data, msg: null };
+  } catch (error) {
+    console.error(" error:", error);
+    throw error;
+  }
+}
+export async function getRoundTemplatesByJobId(id) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/round-template/by-job/`+id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    console.log("data:", data);
+    return { data, msg: null };
+  } catch (error) {
+    console.error(" error:", error);
+    throw error;
+  }
+}
+
+export async function assignReviewerToJob(formData) {
+  try {
+    console.log("form data in api  ", formData);
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/assignReviewer`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+
+ 
+    return { data:response, msg: null };
+  } catch (error) {
+    console.error("  error:", error);
+    throw error;
+  }
+}
+
+
+export async function removeReviewerToJob(formData) {
+  try {
+    console.log("form data in api  ", formData);
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/dischargeReviewer`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+
+ 
+    return { data:response, msg: null };
+  } catch (error) {
+    console.error("  error:", error);
+    throw error;
+  }
+}
+
+
+export async function createRoundTemplatesByJobId(formData) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/round-templates`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+
+    return { data:response, msg: null };
+  } catch (error) {
+    console.error(" error:", error);
+    throw error;
+  }
+}
+export async function deleteRoundTemplatesByJobId(id) {
+  try {
+    
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/round-template/`+id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+
+ 
+    return { data:response, msg: null };
+  } catch (error) {
+    console.error("  error:", error);
+    throw error;
+  }
+}
+
+
+export async function  updateRoundTemplatesByJobId(formData) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/round-templates`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+
+    return { data: response, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+}

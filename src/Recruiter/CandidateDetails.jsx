@@ -79,7 +79,7 @@ const CandidateDetails = ({ candidateId, goBack }) => {
     if (!formData.candidateId) return <div className="p-6 text-center text-gray-500">No candidate details available.</div>;
 
     return (
-       <>
+        <div className="p-6 bg-white rounded-lg shadow-md max-w-5xl mx-auto border border-gray-100">
                 <div className="flex justify-between items-center w-full mb-6">
                     <button
                         onClick={goBack}
@@ -128,7 +128,7 @@ const CandidateDetails = ({ candidateId, goBack }) => {
                         </>
                     )}
                 </div>
-            </>
+            </div>
     );
 };
 
