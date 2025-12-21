@@ -58,7 +58,7 @@ const CreateNewJob = ({ goBack,refreshList }) => {
     const { name, value } = e.target;
     setFormData(prevData => {
       const updates = { [name]: value };
-      // Clear closedReason if status changes to Open
+       
       if (name === 'status' && value === 'Open') {
         updates.closedReason = null;
       }

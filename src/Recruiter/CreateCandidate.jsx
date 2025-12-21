@@ -64,7 +64,7 @@ const CreateCandidate = ({ goBack }) => {
                         Back
                     </button>
                     <h1 className="text-3xl font-bold text-center text-gray-800 flex-grow">Create New Candidate</h1>
-                    <div></div> {/* Spacer */}
+                    <div></div>  
                 </div>
 
                 <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">

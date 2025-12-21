@@ -67,7 +67,8 @@ const SkillReview = ({
     applicationId,       
     username,             
     isPublished,    
-    role,stage      
+    role,stage  ,
+    refresh  
 }) => {
 
    
@@ -115,6 +116,7 @@ const SkillReview = ({
         {
             setError(response.msg);
         }
+        refresh(c=>c+1);
         setUpdate(false); 
         setLoading(false);
       };

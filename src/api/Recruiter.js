@@ -41,6 +41,7 @@ export async function getAllJobsbyUser(userName) {
     }
 
     const data = await response.json();
+    console.log("jobs by user data:", data);
     return { data, msg: null };
   } catch (error) {
     console.error("get all jobs error:", error);
@@ -369,6 +370,30 @@ export async function getMatchByJobId(id) {
   try {
     const token = Cookies.get("token");
     const response = await fetch(`https://localhost:7084/api/Util/getMatchByJob/`+id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    console.log("matches data:", data);
+    return { data, msg: null };
+  } catch (error) {
+    console.error(" error:", error);
+    throw error;
+  }
+}
+export async function getMatchByCandidateId(id) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Util/getMatchByCandidateId/`+id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

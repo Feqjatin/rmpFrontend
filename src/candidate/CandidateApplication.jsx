@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {deleteRescheduleRequest,createRescheduleRequest,getCandidateRescheduleRequests,getCandidateData} from "../api/Candidate"
+import { getMatchByCandidateId } from '../api/Recruiter';
+import { MapPin, Briefcase, TrendingUp, FileText, CheckCircle } from 'lucide-react';
+
 
 function CandidateApplication() {
   const [loading, setLoading] = useState(false);
@@ -12,6 +15,7 @@ function CandidateApplication() {
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [activeTab, setActiveTab] = useState('applications');
   const id = useSelector((state) => state.user.Id);
+  const [matches, setMatches] = useState([]);
 
   const [rescheduleForm, setRescheduleForm] = useState({
     interviewId: '',
@@ -23,6 +27,7 @@ function CandidateApplication() {
   useEffect(() => {
     fetchApplicationData();
     fetchRescheduleRequests();
+    fetchMatches();
   }, []);
 
   const fetchApplicationData = async () => {
@@ -38,7 +43,20 @@ function CandidateApplication() {
     }
     setLoading(false);
   };
-
+ 
+  const fetchMatches = async () => {
+    setLoading(true);
+    
+    const response = await getMatchByCandidateId(id);
+  
+    if (!response || !response.data) {
+      setError("Failed to load matches");
+    } else {
+      setMatches(response.data || []);
+      setError(null);
+    }
+    setLoading(false);
+  }
   const fetchRescheduleRequests = async () => {
     const response = await getCandidateRescheduleRequests(id);
   
@@ -123,7 +141,17 @@ function CandidateApplication() {
     }
     setLoading(false);
   };
+  const getRankColor = (rank) => {
+    if (rank >= 20) return 'bg-green-100 text-green-800 border-green-300';
+    if (rank >= 10) return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+    return 'bg-gray-100 text-gray-800 border-gray-300';
+  };
 
+  const getStatusColor2 = (status) => {
+    if (status?.includes('Close')) return 'bg-red-100 text-red-800';
+    if (status?.includes('Open')) return 'bg-green-100 text-green-800';
+    return 'bg-blue-100 text-blue-800';
+  };
   const handleCancel = () => {
     setIsRescheduling(false);
     setSelectedApplication(null);
@@ -185,6 +213,16 @@ function CandidateApplication() {
               }`}
             >
               Reschedule Requests
+            </button>
+            <button
+              onClick={() => setActiveTab('matches')}
+              className={`px-4 py-2 font-medium transition ${
+                activeTab === 'matches'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-500 hover:text-blue-500'
+              }`}
+            >
+              Job Matches
             </button>
           </div>
         </div>
@@ -345,6 +383,107 @@ function CandidateApplication() {
             </div>
           </>
         )}
+        
+      {activeTab === 'matches' && (
+        <div className="space-y-4">
+          {!loading && matches.length === 0 && (
+            <div className="text-center py-16">
+              <div className="mb-4 text-gray-400">
+                <Briefcase size={64} className="mx-auto" />
+              </div>
+              <p className="text-gray-500 text-lg">No job matches found.</p>
+              <p className="text-gray-400 text-sm mt-2">Check back later for matching opportunities</p>
+            </div>
+          )}
+          
+          {activeTab === 'matches' && (
+        <div className="space-y-4">
+          {!loading && matches.length === 0 && (
+            <div className="text-center py-16">
+              <div className="mb-4 text-gray-400">
+                <Briefcase size={64} className="mx-auto" />
+              </div>
+              <p className="text-gray-500 text-lg">No job matches found.</p>
+              <p className="text-gray-400 text-sm mt-2">Check back later for matching opportunities</p>
+            </div>
+          )}
+          
+          {matches.map((match) => (
+            <div
+              key={match.jobId}
+              className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-200"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex-grow">
+                   
+                  <div className="flex items-center gap-3 mb-2">
+                    <h3 className="text-2xl font-bold text-gray-900">
+                      {match.title}
+                    </h3>
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold border-2 ${getRankColor(match.rank)}`}>
+                      Rank #{match.rank}
+                    </span>
+                  </div>
+ 
+                  <div className="flex items-center gap-2 text-gray-600 mb-3">
+                    <MapPin size={16} className="text-gray-400" />
+                    <span className="text-sm">{match.location}</span>
+                  </div>
+ 
+                  <div className="mb-4">
+                    <div className="flex items-start gap-2">
+                      <FileText size={16} className="text-gray-400 mt-1 flex-shrink-0" />
+                      <p className="text-gray-700 text-sm leading-relaxed">
+                        {match.description}
+                      </p>
+                    </div>
+                  </div>
+
+                
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor2(match.status)}`}>
+                      {match.status}
+                    </span>
+                    <span className="text-xs text-gray-500 flex items-center gap-1">
+                      <Briefcase size={14} />
+                      Job ID: {match.jobId}
+                    </span>
+                  </div>
+                </div>
+ 
+                <div className="ml-4 flex flex-col items-center">
+                  <div className={`w-20 h-20 rounded-full flex items-center justify-center border-4 ${getRankColor(match.rank)}`}>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold">{match.rank}</div>
+                      <div className="text-xs font-semibold">Match</div>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <TrendingUp size={16} className={`mx-auto ${
+                      match.rank >= 20 ? 'text-green-600' : 
+                      match.rank >= 10 ? 'text-yellow-600' : 
+                      'text-gray-600'
+                    }`} />
+                  </div>
+                </div>
+              </div>
+
+            
+              <div className="flex gap-3 pt-4 border-t border-gray-200">
+                <button className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-sm">
+                  View Details
+                </button>
+                <button className="flex-1 px-4 py-2 bg-white border-2 border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors font-medium text-sm">
+                  Apply Now
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+        </div>
+      )}
+
 
         {activeTab === 'reschedule' && (
           <div className="space-y-4">

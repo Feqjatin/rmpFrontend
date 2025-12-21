@@ -8,13 +8,13 @@ function JobConfig({ jobId }) {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('Reviewers');
   const [error, setError] = useState(null);
-  // Reviewer Management State
+ 
   const [reviewers, setReviewers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [showAddReviewer, setShowAddReviewer] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
   
-  // Round Templates State
+   
   const [roundTemplates, setRoundTemplates] = useState([]);
   const [showAddRound, setShowAddRound] = useState(false);
   const [editingRounds, setEditingRounds] = useState([]);
@@ -85,7 +85,7 @@ function JobConfig({ jobId }) {
     fetchData();
   };
 
-  // Round Templates Functions
+ 
   const handleAddNewRound = () => {
     const newRound = {
       tempId: Date.now(),
@@ -93,7 +93,9 @@ function JobConfig({ jobId }) {
       roundOrder: roundTemplates.length + newRounds.length + 1,
       roundType: "Technical",
       roundName: "",
-      description: ""
+      description: "",
+      weightage:1.0,
+      IsCustomRound:false
     };
     setNewRounds([...newRounds, newRound]);
   };
@@ -170,7 +172,7 @@ function JobConfig({ jobId }) {
     <div className="max-w-6xl mx-auto my-8 p-6 bg-white rounded-2xl border border-gray-200 font-sans" style={{ background: "#dce9f2" }}>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Job Configuration</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
-      {/* Tabs */}
+       
       <div className="relative mb-6">
         <div className="flex">
           {tabs.map((tab) => (
@@ -196,7 +198,7 @@ function JobConfig({ jobId }) {
 
       {loading && <p className="text-blue-500">Loading...</p>}
 
-      {/* Reviewers Tab */}
+    
       {!loading && activeTab === 'Reviewers' && (
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
@@ -210,7 +212,7 @@ function JobConfig({ jobId }) {
             </button>
           </div>
 
-          {/* Add Reviewer Form */}
+        
           {showAddReviewer && (
             <div className="mb-4 p-4 bg-white rounded-lg shadow border border-gray-200">
               <div className="flex gap-4 items-end">
@@ -249,7 +251,7 @@ function JobConfig({ jobId }) {
             </div>
           )}
 
-          {/* Reviewers Table */}
+       
           <div className="overflow-x-auto shadow-md rounded-lg">
             <table className="min-w-full table-auto border-collapse border border-gray-300">
               <thead className="bg-gray-100">
@@ -298,7 +300,7 @@ function JobConfig({ jobId }) {
         </div>
       )}
 
-      {/* Round Templates Tab */}
+     
       {!loading && activeTab === 'Round Templates' && (
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
@@ -332,7 +334,7 @@ function JobConfig({ jobId }) {
             </div>
           </div>
 
-          {/* Existing Rounds */}
+           
           <div className="space-y-3 mb-6">
             {roundTemplates.map((round) => {
               const editing = isEditing(round.roundTemplateId);
@@ -340,7 +342,7 @@ function JobConfig({ jobId }) {
               
               return (
                 <div key={round.roundTemplateId} className="p-4 bg-white rounded-lg shadow border border-gray-200">
-                  <div className="grid grid-cols-12 gap-4 items-center">
+                  <div className="grid grid-cols-8 gap-4 items-center">
                     <div className="col-span-1">
                       <label className="block text-xs text-gray-500 mb-1">Order</label>
                       <input
@@ -374,6 +376,23 @@ function JobConfig({ jobId }) {
                         className="w-full px-2 py-1 border border-gray-300 rounded disabled:bg-gray-100"
                       />
                     </div>
+                    <div className="col-span-2">
+                      <label className="block text-xs text-gray-500 mb-1">weightage</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={editData.weightage || ''}
+                        onChange={(e) =>
+                          handleUpdateEditingRound(
+                            round.roundTemplateId,
+                            'weightage',
+                            parseFloat(e.target.value) || 1
+                          )
+                        }
+                        disabled={!editing}
+                        className="w-full px-2 py-1  border border-gray-300 rounded disabled:bg-gray-100"
+                      />
+                    </div>
                     <div className="col-span-4">
                       <label className="block text-xs text-gray-500 mb-1">Description</label>
                       <input
@@ -383,6 +402,24 @@ function JobConfig({ jobId }) {
                         disabled={!editing}
                         className="w-full px-2 py-1 border border-gray-300 rounded disabled:bg-gray-100"
                       />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-xs text-gray-500 mb-1">Is-Custom</label>
+                    <select
+                      value={editData.isCustomRound ?? false}
+                      onChange={(e) =>
+                        handleUpdateEditingRound(
+                          round.roundTemplateId,
+                          'isCustomRound',
+                          e.target.value === 'true'
+                        )
+                      }
+                      disabled={!editing}
+                      className="w-full px-2 py-1  border border-gray-300 rounded disabled:bg-gray-100"
+                    >
+                      <option value="false">False</option>
+                      {/* <option value="true">True</option> */}
+                    </select>
                     </div>
                     <div className="col-span-2 flex gap-2 justify-end">
                       {editing ? (
@@ -415,20 +452,20 @@ function JobConfig({ jobId }) {
             })}
           </div>
 
-          {/* New Rounds */}
+           
           {newRounds.length > 0 && (
             <div className="space-y-3">
               <h4 className="text-lg font-semibold text-green-700">New Rounds</h4>
               {newRounds.map((round) => (
                 <div key={round.tempId} className="p-4 bg-green-50 rounded-lg shadow border-2 border-green-200">
-                  <div className="grid grid-cols-12 gap-4 items-center">
+                  <div className="grid grid-cols-8 gap-4 items-center">
                     <div className="col-span-1">
                       <label className="block text-xs text-gray-500 mb-1">Order</label>
                       <input
                         type="number"
                         value={round.roundOrder}
                         onChange={(e) => handleUpdateNewRound(round.tempId, 'roundOrder', parseInt(e.target.value))}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-center"
+                        className="w-full px-2 py-1  border border-gray-300 rounded text-center"
                       />
                     </div>
                     <div className="col-span-2">
@@ -436,7 +473,7 @@ function JobConfig({ jobId }) {
                       <select
                         value={round.roundType}
                         onChange={(e) => handleUpdateNewRound(round.tempId, 'roundType', e.target.value)}
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
+                        className="w-full px-2 py-1   border border-gray-300 rounded"
                       >
                         {roundTypes.map(type => (
                           <option key={type} value={type}>{type}</option>
@@ -449,8 +486,20 @@ function JobConfig({ jobId }) {
                         type="text"
                         value={round.roundName}
                         onChange={(e) => handleUpdateNewRound(round.tempId, 'roundName', e.target.value)}
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
+                        className="w-full px-2 py-1   border border-gray-300 rounded"
                         placeholder="Round name..."
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-xs text-gray-500 mb-1">Weightage</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={round.weightage}
+                        onChange={(e) =>
+                          handleUpdateNewRound(round.tempId, 'weightage', parseFloat(e.target.value) || 1)
+                        }
+                        className="w-full px-2 py-1  border border-gray-300 rounded disabled:bg-gray-100"
                       />
                     </div>
                     <div className="col-span-4">
@@ -459,10 +508,26 @@ function JobConfig({ jobId }) {
                         type="text"
                         value={round.description}
                         onChange={(e) => handleUpdateNewRound(round.tempId, 'description', e.target.value)}
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
+                        className="w-full px-2 py-1   border border-gray-300 rounded"
                         placeholder="Description..."
                       />
                     </div>
+                    
+
+                    <div className="col-span-2">
+                      <label className="block text-xs text-gray-500 mb-1">Is Custom</label>
+                      <select
+                        value={round.isCustomRound}
+                        onChange={(e) =>
+                          handleUpdateNewRound(round.tempId, 'isCustomRound', e.target.value === 'true')
+                        }
+                        className="w-full px-2 py-1 text-xs border border-gray-300 rounded"
+                      >
+                        <option value="false">False</option>
+                        {/* <option value="true">True</option> */}
+                      </select>
+                    </div>
+
                     <div className="col-span-2 flex justify-end">
                       <button
                         onClick={() => handleRemoveNewRound(round.tempId)}

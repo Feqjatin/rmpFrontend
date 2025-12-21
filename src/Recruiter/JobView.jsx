@@ -188,6 +188,7 @@ const JobView = ({ job, goBack ,refreshList}) => {
                   <option value="Open">Open</option>
                   <option value="Temporary Close">Temporary Close</option>
                   <option value="Permanent Close">Permanent Close</option>
+                  <option value="Permanent Close(Required Candidate Found)">Permanent Close(Required Candidate Found)</option>
                 </select>
               )}
             </div>
@@ -356,7 +357,20 @@ const JobView = ({ job, goBack ,refreshList}) => {
               </button>
             </>
           )}
+         
         </div>
+        {job.status === 'Permanent Close(Required Candidate Found)' &&
+        <div> 
+        <h3 className="text-lg font-bold text-green-800">Selected Candidate</h3>
+         <ul> {job.selectedCandidates.map((candidate) => (
+            <li key={candidate.candidateId} className="mt-4 p-4 border border-green-300 rounded-lg bg-green-50">
+              <p className="text-green-700">Name: {candidate.candidateName}</p>
+              <p className="text-green-700">Email: {candidate.candidateEmail}</p>
+            </li>
+          ))}
+          </ul>
+          </div>
+          }
         <div className="mt-12">
           <ApplicationForJob jobId={job.jobId} />
           </div>

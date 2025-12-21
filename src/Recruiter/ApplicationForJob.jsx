@@ -76,8 +76,7 @@ function ApplicationsForJob({ jobId }) {
         <div className="p-6">
           {loading && <p className="text-blue-500">Loading...</p>}
           {error && <p className="text-red-500">{error}</p>}
-
-          {/* In Process Tab */}
+ 
           {!loading && activeTab === 'In Process' && (
             <>
               {applicationsData.length === 0 ? (
@@ -129,8 +128,7 @@ function ApplicationsForJob({ jobId }) {
               )}
             </>
           )}
-
-          {/* Possible Matches Tab */}
+ 
           {!loading && activeTab === 'Possible Matches' && (
             <>
               {matchesData.length === 0 ? (
@@ -157,7 +155,7 @@ function ApplicationsForJob({ jobId }) {
                               match.rank >= 50 ? 'bg-yellow-200 text-yellow-800' :
                               'bg-gray-200 text-gray-800'
                             }`}>
-                              {/* {match.rank || 'N/A'} */}
+                             
                               {match.rank }
                             </span>
                           </td>
