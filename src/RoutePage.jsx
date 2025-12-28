@@ -11,7 +11,7 @@ import ReviewerDashboard from "./Reviewer/ReviewerDashboard";
 import RecruiterDashboard from "./Recruiter/RecruiterDashBoard";
 import InterviewerDashboard from "./Interviewer/InterviewerDashboard";
 import CandidateDashboard from "./candidate/CandidateDashboard";
-
+import ApplicationsForJob from "./Recruiter/ApplicationForJob";
 function RoutePage (){
   const [count, setCount] = React.useState(0);
 return (<>
@@ -40,6 +40,7 @@ return (<>
     <Route element={<PrivateRoute allowedRoles={["candidate"]} />}>
         <Route path="/candidate/dashboard" element={<CandidateDashboard />} />
     </Route>
+    
   </Routes>
   </div>
 </>);

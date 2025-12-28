@@ -115,7 +115,7 @@ function InterviewerManage() {
                         {new Date(a.scheduledEndTime).toLocaleString()}
                     </td>
                     <td className="px-4 py-2 border border-gray-300 text-center">{a.status}</td>
-                    <td className="px-4 py-2 border border-gray-300 text-center">{a.roundInfo.roundOrder}</td>
+                    <td className="px-4 py-2 border border-gray-300 text-center">{a.roundInfo.roundSequence}</td>
                     <td className="px-4 py-2 border border-gray-300 text-center">{a.roundInfo.roundName}</td>
                     <td className="px-4 py-2 border border-gray-300 text-center">{a.roundInfo.roundType}</td>
                     <td className="px-4 py-2 border border-gray-300 text-center">

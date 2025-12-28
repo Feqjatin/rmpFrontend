@@ -360,6 +360,7 @@ export async function getApplicationsByJobId(id) {
       return { data: null, msg: errorMsg };
     }
     const data = await response.json();
+    console.log("applications data:", data);
     return { data, msg: null };
   } catch (error) {
     console.error(" error:", error);
@@ -534,8 +535,9 @@ export async function createRoundTemplatesByJobId(formData) {
       const errorMsg = await response.text();
       return { data: null, msg: errorMsg };
     }
-
-    return { data:response, msg: null };
+    var data= await response.json();
+     console.log("created round template response:", data);
+    return { data, msg: null };
   } catch (error) {
     console.error(" error:", error);
     throw error;
@@ -590,3 +592,108 @@ export async function  updateRoundTemplatesByJobId(formData) {
     throw error;
   }
 }
+
+
+
+export async function getInterviewsByJobId(id) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/getInterviewSchedule/`+id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    console.log("data:", data);
+    return { data, msg: null };
+  } catch (error) {
+    console.error(" error:", error);
+    throw error;
+  }
+}
+
+ 
+export async function bulkAssignInterviewer(assignData) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Util/bulk-add-interviewer`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(assignData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+     
+    return { data:response, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+}
+
+
+
+ 
+export async function bulkAssignTest(assignData) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Util/schedule/bulk`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(assignData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    return { data, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+}
+ 
+export async function bulkCreateApplications(applicationData) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/bulkApplicationCreate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(applicationData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    return { data, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+}
+
+

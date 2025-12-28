@@ -7,6 +7,7 @@ import ApplicationFeedbackHistory from '../component/ApplicationFeedbackHistory'
 import CandidateSkillHistory from '../component/CandidateSkillHistory';
 import {updateInterviewSchedule,addInterviewerToInterview, removeInterviewerFromInterview, updateRoundScore,}from '../api/Interviewer'
 import {getAllUsers} from '../api/Admin'
+import InterviewRoundManager from './InterviewRoundManager';
 
 function InterviewerApplication({data, setPage, refresh}) {
   const [resumeLoading, setResumeLoading] = useState(true);
@@ -17,7 +18,7 @@ function InterviewerApplication({data, setPage, refresh}) {
   const [applicationComment, setApplicationComment] = useState('');
   const [showSkillAssessment, setShowSkillAssessment] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  
+  const [showRoundManager, setShowRoundManager] = useState(false);
   
   const [isScheduling, setIsScheduling] = useState(false);
   const [scheduleForm, setScheduleForm] = useState({
@@ -471,6 +472,12 @@ function InterviewerApplication({data, setPage, refresh}) {
               >
                 {showHistory ? 'Hide' : 'Show'} History
               </button>
+              <button
+                onClick={() => setShowRoundManager(!showRoundManager)}
+                className="w-full py-2 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 transition"
+              >
+                {showRoundManager ? 'Hide' : 'Show'} Round Manager
+              </button>
             </div>
 
             {data.status!="Completed"&&data.status!="Cancelled"&&
@@ -494,6 +501,14 @@ function InterviewerApplication({data, setPage, refresh}) {
         )}
       </div>
       
+      {showRoundManager && (
+        <div className="mt-6">
+          <InterviewRoundManager
+            applicationId={data.applicationId}
+            refresh={refresh}
+          />
+        </div>
+      )}
 
      
       {showSkillAssessment && (

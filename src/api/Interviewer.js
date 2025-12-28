@@ -171,3 +171,77 @@ export async function updateRoundScore(interviewId, scoreData) {
     throw error;
   }
 }
+
+export async function getApplicationRounds(applicationId) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Interviewer/getRounds/`+applicationId, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    return { data, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+
+}
+
+
+export async function deleteInterview(interviewId) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Interviewer/schedule/${interviewId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    
+    return { data:response, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+}
+
+
+export async function createInterview(interviewData) {
+  try {
+    const token = Cookies.get("token");
+    console.log("interviewData:", interviewData);
+    const response = await fetch(`https://localhost:7084/api/Interviewer/schedule`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(interviewData),
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    
+    return { data:response, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+}

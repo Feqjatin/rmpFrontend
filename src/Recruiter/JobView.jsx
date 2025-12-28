@@ -4,6 +4,7 @@ import { updateJob } from '../api/Recruiter';
 import { deleteJob  } from '../api/Recruiter';
 import  ApplicationForJob from './ApplicationForJob';
 import  JobConfig from './JobConfig';
+import { useNavigate } from 'react-router-dom';
 const JobView = ({ job, goBack ,refreshList}) => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
@@ -13,6 +14,8 @@ const JobView = ({ job, goBack ,refreshList}) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [count, setCount] = useState(0);
+    const [applicationShow, setApplicationShow] = useState(false);
+    const navigate = useNavigate();
   
     useEffect(() => {
       if (job) {
@@ -158,6 +161,9 @@ const JobView = ({ job, goBack ,refreshList}) => {
     const isStatusClosed = formData.status === 'Temporary Close' || formData.status === 'Permanent Close';
     
     return (
+       <>
+      {applicationShow && <ApplicationForJob jobId={job.jobId} goBack={()=>setApplicationShow(false)}/>}
+      {!applicationShow &&
       <div className="p-6 bg-white rounded-lg shadow-md max-w-5xl mx-auto border border-gray-100">
         <div className="flex justify-between items-center w-full mb-6">
           <button
@@ -372,12 +378,14 @@ const JobView = ({ job, goBack ,refreshList}) => {
           </div>
           }
         <div className="mt-12">
-          <ApplicationForJob jobId={job.jobId} />
+          <button className="bg-gray-400 text-white px-6 py-3 rounded-lg shadow-md hover:bg-gray-500 transition" onClick={()=>setApplicationShow(true)}>Applications for this Job</button>
           </div>
           <div className="mt-12">
           <JobConfig jobId={job.jobId} />
           </div>
       </div>
+       } 
+      </>
     );
 };
 
