@@ -175,7 +175,7 @@ function InterviewerApplication({data, setPage, refresh}) {
     setLoading(true);
     setError(null);
 
-    const response = await updateRoundScore(data.interviewId, {status: val, });
+    const response = await updateRoundScore(data.interviewId, {status: val });
 
     if (!response || !response.data) {
       setError(response?.msg || "Failed to save status");

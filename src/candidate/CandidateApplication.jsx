@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {deleteRescheduleRequest,createRescheduleRequest,getCandidateRescheduleRequests,getCandidateData} from "../api/Candidate"
+import {deleteRescheduleRequest,createRescheduleRequest,getCandidateRescheduleRequests,getCandidateData,processInvitationResponse} from "../api/Candidate"
 import { getMatchByCandidateId } from '../api/Recruiter';
 import { MapPin, Briefcase, TrendingUp, FileText, CheckCircle } from 'lucide-react';
 
@@ -184,6 +184,18 @@ function CandidateApplication() {
     };
     return colors[status] || 'bg-gray-100 text-gray-700';
   };
+  const handleInvitationResponce=async(id,val)=>{
+    setLoading(true);
+    setError(null);
+
+    const response = await processInvitationResponse({ApplicationId:id,Response:val});
+    if (!response.msg) {
+      setError( "Failed to process invitation response");
+    }
+    
+    setLoading(false);
+    fetchApplicationData();
+  }
 
   return (
     <div className="p-6 rounded-xl font-sans" style={{ background: "#f9fafb" }}>
@@ -336,9 +348,45 @@ function CandidateApplication() {
                           Updated: {new Date(app.updatedAt).toLocaleString()}
                         </p>
                       )}
-                      
+                      {
+                        app.applicationStatus === 'PRE-APPLIED' && (
+                        <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200 flex items-center gap-2">
+                          <CheckCircle className="text-green-500" />
+                          <p className="text-sm font-semibold text-green-700">
+                            Recruiter find you suitable for this role. Please proceed to complete your application.
+                          </p>
+                          <button
+                          onClick={()=>handleInvitationResponce(app.applicationId,'Applied')}
+                          className="ml-auto px-3 py-1 text-sm bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
+                          >Proceed
+                          
+                          </button>
+                          <button
+                          onClick={()=>handleInvitationResponce(app.applicationId,'Rejected')}
+                          className="ml-auto px-3 py-1 text-sm bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition"
+                          >Not Interested
+                            
+
+                          </button>
+                        </div>
+
+                        )
+                      }
                       {app.applicationStatus === 'Interview' && app.interview && (
                         <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                          {app.interview.testId ? (
+                          <div className="flex gap-2">
+                           <p>Test Id :{app.interview.testId}</p>
+                            <button
+                              onClick={() => handleCopyMeetingLink(app.interview.testId)}
+                              className="px-3 py-1 text-sm bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition"
+                            >
+                              Copy Id
+                            </button>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-gray-500">TestId not available yet</p>
+                        )}
                           <p className="text-sm font-semibold text-gray-700 mb-2">
                             Interview ID: {app.interview.interviewId}
                           </p>
@@ -366,8 +414,13 @@ function CandidateApplication() {
                           ) : (
                             <p className="text-xs text-gray-500">Meeting link not available yet</p>
                           )}
+
+                         
                         </div>
+                        
+                      
                       )}
+                       
                     </div>
                     {app.applicationStatus === 'Interview' && !isRescheduling && (
                       <button

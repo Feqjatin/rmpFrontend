@@ -164,7 +164,8 @@ export async function updateRoundScore(interviewId, scoreData) {
       const errorMsg = await response.text();
       return { data: null, msg: errorMsg };
     }
-     
+     var v=await response.json();
+     console.log("response:", v);
     return { data:response, msg: null };
   } catch (error) {
     console.error("error:", error);

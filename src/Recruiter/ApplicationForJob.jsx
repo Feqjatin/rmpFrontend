@@ -16,11 +16,12 @@ function ApplicationsForJob({jobId, goBack}) {
   const tabs = ['In Process', 'Possible Matches', 'Interviews'];
   const activeIndex = tabs.indexOf(activeTab);
 
-  
+ 
   const [selectedInterviews, setSelectedInterviews] = useState([]);
   const [selectedCandidates, setSelectedCandidates] = useState([]);
+  const [selectedMatches, setSelectedMatches] = useState([]);
   
-  
+ 
   const [showAssignInterviewer, setShowAssignInterviewer] = useState(false);
   const [showAssignTest, setShowAssignTest] = useState(false);
   const [showBulkAdd, setShowBulkAdd] = useState(false);
@@ -69,8 +70,8 @@ function ApplicationsForJob({jobId, goBack}) {
 
   const fetchUsers = async () => {
     const response = await getAllUsers();
-    if (response && response) {
-      setAllUsers(response);
+    if (response && response.data) {
+      setAllUsers(response.data);
     }
   };
 
@@ -110,6 +111,22 @@ function ApplicationsForJob({jobId, goBack}) {
       setSelectedCandidates([]);
     } else {
       setSelectedCandidates(allCandidates.map(c => c.candidateId));
+    }
+  };
+
+  const handleMatchSelect = (candidateId) => {
+    setSelectedMatches(prev => 
+      prev.includes(candidateId) 
+        ? prev.filter(id => id !== candidateId)
+        : [...prev, candidateId]
+    );
+  };
+
+  const handleSelectAllMatches = () => {
+    if (selectedMatches.length === matchesData.length) {
+      setSelectedMatches([]);
+    } else {
+      setSelectedMatches(matchesData.map(m => m.candidateId));
     }
   };
 
@@ -189,6 +206,31 @@ function ApplicationsForJob({jobId, goBack}) {
       setSuccess(true);
       setShowBulkAdd(false);
       setSelectedCandidates([]);
+      fetchData();
+      setTimeout(() => setSuccess(false), 2000);
+    }
+    setLoading(false);
+  };
+
+  const handleBulkCreateFromMatches = async () => {
+    if (selectedMatches.length === 0) {
+      setError("Please select candidates from matches");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const response = await bulkCreateApplications({
+      candidateIds: selectedMatches,
+      jobId: jobId
+    });
+
+    if (!response || !response.data) {
+      setError(response?.msg || "Failed to create applications");
+    } else {
+      setSuccess(true);
+      setSelectedMatches([]);
       fetchData();
       setTimeout(() => setSuccess(false), 2000);
     }
@@ -339,6 +381,24 @@ function ApplicationsForJob({jobId, goBack}) {
 
           {!loading && activeTab === 'Possible Matches' && (
             <>
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  {selectedMatches.length > 0 && (
+                    <span className="text-gray-700 font-medium">
+                      {selectedMatches.length} candidate(s) selected
+                    </span>
+                  )}
+                </div>
+                {selectedMatches.length > 0 && (
+                  <button
+                    onClick={handleBulkCreateFromMatches}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition"
+                  >
+                    Add {selectedMatches.length} to Applications
+                  </button>
+                )}
+              </div>
+
               {matchesData.length === 0 ? (
                 <p>No Possible Matches Found</p>
               ) : (
@@ -346,6 +406,14 @@ function ApplicationsForJob({jobId, goBack}) {
                   <table className="min-w-full table-auto border-collapse border border-gray-300">
                     <thead className="bg-gray-100">
                       <tr>
+                        <th className="px-4 py-2 border border-gray-300">
+                          <input
+                            type="checkbox"
+                            checked={selectedMatches.length === matchesData.length}
+                            onChange={handleSelectAllMatches}
+                            className="w-4 h-4"
+                          />
+                        </th>
                         <th className="px-4 py-2 border border-gray-300">Rank</th>
                         <th className="px-4 py-2 border border-gray-300">Candidate Name</th>
                         <th className="px-4 py-2 border border-gray-300">Email</th>
@@ -356,6 +424,14 @@ function ApplicationsForJob({jobId, goBack}) {
                     <tbody>
                       {matchesData.map((match, index) => (
                         <tr key={match.candidateId} className={index < 3 ? 'bg-green-50' : ''}>
+                          <td className="px-4 py-2 border border-gray-300 text-center">
+                            <input
+                              type="checkbox"
+                              checked={selectedMatches.includes(match.candidateId)}
+                              onChange={() => handleMatchSelect(match.candidateId)}
+                              className="w-4 h-4"
+                            />
+                          </td>
                           <td className="px-4 py-2 border border-gray-300 text-center">
                             <span className={`px-2 py-1 rounded-full text-xs font-bold ${
                               match.rank >= 90 ? 'bg-green-200 text-green-800' :

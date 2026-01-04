@@ -177,7 +177,7 @@ function CandidateDocument() {
                   onChange={(e) => setApplicationId(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">None (General Document)</option>
+                  
                   {candidateData?.jobApplications.map((app) => (
                     <option key={app.applicationId} value={app.applicationId}>
                       Application #{app.applicationId} - Status: {app.applicationStatus}

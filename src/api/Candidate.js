@@ -18,6 +18,7 @@ export async function getCandidateData(id) {
     }
 
     const data = await response.json();
+    console.log("candidate data:", data);
     return { data, msg: null };
   } catch (error) {
     console.error("error:", error);
@@ -440,5 +441,32 @@ export async function getCandidateRescheduleRequests(id) {
       throw error;
     }
   }
+
+  export async function processInvitationResponse(formData) {
+    try {
+  
+      const token = Cookies.get("token");
+      const response = await fetch(`https://localhost:7084/api/Candidate/invitationResponse`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        } ,
+        body: JSON.stringify(formData),
+      });
+  
+      if (!response.ok) {
+        const errorMsg = await response.text();
+        return { data: null, msg: errorMsg ||'failed to process invitation response' };
+      }
+  
+     
+      return { data:response, msg: null };
+    } catch (error) {
+      console.error("error:", error);
+      throw error;
+    }
+  }
+
   
 
