@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import{getRescheduleRequests,updateRescheduleRequest}from '../api/Interviewer'
+import{getRescheduleRequests,updateRescheduleRequest}from '../Api/Interviewer'
 function InterviewerReschedule() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();

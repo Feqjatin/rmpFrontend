@@ -1,5 +1,5 @@
 import { use, useEffect, useState } from "react";
-import  {getJobsToReview}  from "../api/Reviewer";
+import  {getJobsToReview}  from "../Api/Reviewer";
 import { useSelector  } from 'react-redux'
 import ReviewerJobDetails from "./ReviewerJobDetails";
 import React from "react";

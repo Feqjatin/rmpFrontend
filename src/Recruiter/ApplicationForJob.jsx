@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getApplicationsByJobId, getMatchByJobId, getInterviewsByJobId, bulkAssignInterviewer, bulkAssignTest, bulkCreateApplications } from '../api/Recruiter';
-import { getAllUsers } from '../api/Admin';
-import { getAllCandidates } from '../api/Candidate';
-
+import { getApplicationsByJobId, getMatchByJobId, getInterviewsByJobId, bulkAssignInterviewer, bulkAssignTest, bulkCreateApplications,getFinalApplication, createBulkSelect} from '../Api/Recruiter';
+import { getAllUsers } from '../Api/Admin';
+import { getAllCandidates } from '../Api/Candidate';
+import {Link } from 'react-router-dom';
 function ApplicationsForJob({jobId, goBack}) {
   const [loading, setLoading] = useState(false);
   const [applicationsData, setApplicationsData] = useState([]);
@@ -12,8 +12,8 @@ function ApplicationsForJob({jobId, goBack}) {
   const [allCandidates, setAllCandidates] = useState([]);
   const [error, setError] = useState();
   const [success, setSuccess] = useState(false);
-  const [activeTab, setActiveTab] = useState('In Process');
-  const tabs = ['In Process', 'Possible Matches', 'Interviews'];
+  const [activeTab, setActiveTab] = useState('Possible Matches');
+  const tabs = ['Possible Matches','In Process' , 'Interviews','Finalized'];
   const activeIndex = tabs.indexOf(activeTab);
 
  
@@ -21,7 +21,9 @@ function ApplicationsForJob({jobId, goBack}) {
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [selectedMatches, setSelectedMatches] = useState([]);
   
- 
+  
+  const [finalizeData ,setFinalizeData]=useState([]);
+  const [selectedFinalized, setSelectedFinalized] = useState([]);
   const [showAssignInterviewer, setShowAssignInterviewer] = useState(false);
   const [showAssignTest, setShowAssignTest] = useState(false);
   const [showBulkAdd, setShowBulkAdd] = useState(false);
@@ -30,11 +32,13 @@ function ApplicationsForJob({jobId, goBack}) {
 
   useEffect(() => {
     fetchData();
+    fetchFinaledApplications();
   }, [jobId]);
 
   useEffect(() => {
     if (showAssignInterviewer) {
       fetchUsers();
+      
     }
   }, [showAssignInterviewer]);
 
@@ -43,6 +47,16 @@ function ApplicationsForJob({jobId, goBack}) {
       fetchCandidates();
     }
   }, [showBulkAdd]);
+
+  const fetchFinaledApplications = async () => {
+    const response = await getFinalApplication(jobId);
+    if (response.data!=null) {
+      setFinalizeData(response.data);
+    }
+    else{
+      setError('Failed to fetch finalized applications.');
+    }
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -70,8 +84,9 @@ function ApplicationsForJob({jobId, goBack}) {
 
   const fetchUsers = async () => {
     const response = await getAllUsers();
-    if (response && response.data) {
-      setAllUsers(response.data);
+    
+    if (response) {
+      setAllUsers(response);
     }
   };
 
@@ -81,7 +96,22 @@ function ApplicationsForJob({jobId, goBack}) {
       setAllCandidates(response.data);
     }
   };
+  const bulkSelect = async (ids)=>{
+    if(ids.length===0){return;}
+    setLoading(true);
+    setError(null);
+    const response = await createBulkSelect({ids:ids});
+    if(response && response.data){
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+      fetchFinaledApplications();
+    }
+    else{
+      setError('Bulk selection failed.');
+    }
+    setLoading(false);
 
+  }
   const handleInterviewSelect = (interviewId) => {
     setSelectedInterviews(prev => 
       prev.includes(interviewId) 
@@ -97,7 +127,21 @@ function ApplicationsForJob({jobId, goBack}) {
       setSelectedInterviews(interviewsData.map(i => i.interviewId));
     }
   };
-
+  const handleFinalizedSelect = (applicationId) => {
+    setSelectedFinalized(prev => 
+      prev.includes(applicationId,) 
+        ? prev.filter(id => id !== applicationId)
+        : [...prev, applicationId]
+    );
+  };
+  
+  const handleSelectAllFinalized = () => {
+    if (selectedFinalized.length === finalizeData.length) {
+      setSelectedFinalized([]);
+    } else {
+      setSelectedFinalized(finalizeData.map(f => f.applicationId));
+    }
+  };
   const handleCandidateSelect = (candidateId) => {
     setSelectedCandidates(prev => 
       prev.includes(candidateId) 
@@ -328,7 +372,11 @@ function ApplicationsForJob({jobId, goBack}) {
                           onChange={() => handleCandidateSelect(candidate.candidateId)}
                           className="w-4 h-4"
                         />
-                        <span>{candidate.name} - {candidate.email}</span>
+                        <span>{candidate.name} - {candidate.email}
+                        <Link to={`/candidate/view/${candidate.candidateId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >
+                         - see more
+                        </Link>
+                        </span>
                       </label>
                     ))}
                   </div>
@@ -349,6 +397,7 @@ function ApplicationsForJob({jobId, goBack}) {
                   <table className="min-w-full table-auto border-collapse border border-gray-300">
                     <thead className="bg-gray-100">
                       <tr>
+                      <th className="px-4 py-2 border border-gray-300">Application Id</th>
                         <th className="px-4 py-2 border border-gray-300">Candidate Name</th>
                         <th className="px-4 py-2 border border-gray-300">Email</th>
                         <th className="px-4 py-2 border border-gray-300">Phone</th>
@@ -359,7 +408,16 @@ function ApplicationsForJob({jobId, goBack}) {
                     <tbody>
                       {applicationsData.map((app) => (
                         <tr key={app.applicationId}>
-                          <td className="px-4 py-2 border border-gray-300 text-center">{app.name}</td>
+                          <td className="px-4 py-2 border border-gray-300 text-center">
+                          <Link to={`/application/view/${app.applicationId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" > 
+                          {app.applicationId}
+                          </Link>
+                            </td>
+                          <td className="px-4 py-2 border border-gray-300 text-center">
+                          <Link to={`/candidate/view/${app.candidateId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >
+                            {app.name}
+                            </Link>
+                            </td>
                           <td className="px-4 py-2 border border-gray-300 text-center">{app.email}</td>
                           <td className="px-4 py-2 border border-gray-300 text-center">{app.phone}</td>
                           <td className="px-4 py-2 border border-gray-300 text-center">
@@ -441,12 +499,17 @@ function ApplicationsForJob({jobId, goBack}) {
                               {match.rank}
                             </span>
                           </td>
-                          <td className="px-4 py-2 border border-gray-300 text-center">{match.name}</td>
+                          <td className="px-4 py-2 border border-gray-300 text-center">
+                          <Link to={`/candidate/view/${match.candidateId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >
+                            {match.name}
+                            </Link>
+                            </td>
+
                           <td className="px-4 py-2 border border-gray-300 text-center">{match.email}</td>
                           <td className="px-4 py-2 border border-gray-300 text-center">{match.phone}</td>
                           <td className="px-4 py-2 border border-gray-300 text-center">
                             {match.resumePath ? (
-                              <a href={`/${match.resumePath}`} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
+                              <a href={match.resumePath} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
                                 View Resume
                               </a>
                             ) : (
@@ -580,7 +643,12 @@ function ApplicationsForJob({jobId, goBack}) {
                             />
                           </td>
                           <td className="px-4 py-2 border border-gray-300 text-center">{interview.interviewId}</td>
-                          <td className="px-4 py-2 border border-gray-300 text-center">{interview.application.applicationId}</td>
+                          <td className="px-4 py-2 border border-gray-300 text-center">
+                          <Link to={`/application/view/${interview.application.applicationId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" > 
+                          {interview.application.applicationId}
+                            </Link>
+                            
+                            </td>
                           <td className="px-4 py-2 border border-gray-300 text-center">
                             <div className="text-sm">
                               <div className="font-semibold">{interview.round.roundName || 'Unnamed'}</div>
@@ -615,6 +683,133 @@ function ApplicationsForJob({jobId, goBack}) {
                           </td>
                         </tr>
                       ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </>
+          )}
+
+          
+          {!loading && activeTab === 'Finalized' && (
+            <>
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  {selectedFinalized.length > 0 && (
+                    <span className="text-gray-700 font-medium">
+                      {selectedFinalized.length} candidate(s) selected
+                    </span>
+                  )}
+                </div>
+                {selectedFinalized.length > 0 && (
+                  <button
+                    onClick={() => {
+                       
+                      bulkSelect(selectedFinalized);
+                    }}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition"
+                  >
+                    Bulk Action ({selectedFinalized.length})
+                  </button>
+                )}
+              </div>
+
+              {finalizeData.length === 0 ? (
+                <div className="text-center py-8">
+                  <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <p className="text-gray-500 text-lg">No Finalized Applications</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto shadow-md rounded-lg">
+                  <table className="min-w-full table-auto border-collapse border border-gray-300">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4 py-2 border border-gray-300">
+                          <input
+                            type="checkbox"
+                            checked={selectedFinalized.length === finalizeData.length && finalizeData.length > 0}
+                            onChange={handleSelectAllFinalized}
+                            className="w-4 h-4"
+                          />
+                        </th>
+                        <th className="px-4 py-2 border border-gray-300">Application ID</th>
+                        <th className="px-4 py-2 border border-gray-300">Candidate ID</th>
+                        <th className="px-4 py-2 border border-gray-300">Candidate Name</th>
+                        <th className="px-4 py-2 border border-gray-300">Final Score</th>
+                        <th className="px-4 py-2 border border-gray-300">Sentiment Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {finalizeData.map((finalizedApp) => {
+                         
+                        const appData = applicationsData.find(app => app.applicationId === finalizedApp.applicationId);
+                        
+                        return (
+                          <tr key={finalizedApp.applicationId} className="hover:bg-gray-50">
+                            <td className="px-4 py-2 border border-gray-300 text-center">
+                              <input
+                                type="checkbox"
+                                checked={selectedFinalized.includes(finalizedApp.applicationId)}
+                                onChange={() => handleFinalizedSelect(finalizedApp.applicationId)}
+                                className="w-4 h-4"
+                              />
+                            </td>
+                            <td className="px-4 py-2 border border-gray-300 text-center">
+                              <Link 
+                                to={`/application/view/${finalizedApp.applicationId}`} 
+                                className="text-blue-600 hover:text-blue-800 hover:underline transition font-semibold"
+                              >
+                                #{finalizedApp.applicationId}
+                              </Link>
+                            </td>
+                            <td className="px-4 py-2 border border-gray-300 text-center">
+                              <Link 
+                                to={`/candidate/view/${finalizedApp.candidateId}`} 
+                                className="text-blue-600 hover:text-blue-800 hover:underline transition"
+                              >
+                                {finalizedApp.candidateId}
+                              </Link>
+                            </td>
+                            <td className="px-4 py-2 border border-gray-300 text-center">
+                              {appData ? appData.name : 'N/A'}
+                            </td>
+                            <td className="px-4 py-2 border border-gray-300 text-center">
+                              <div className="flex items-center justify-center gap-2">
+                                <div className="flex-grow max-w-[100px] bg-gray-200 rounded-full h-2">
+                                  <div 
+                                    className={`h-2 rounded-full ${
+                                      finalizedApp.finalWeightedScore >= 80 ? 'bg-green-500' :
+                                      finalizedApp.finalWeightedScore >= 60 ? 'bg-blue-500' :
+                                      finalizedApp.finalWeightedScore >= 40 ? 'bg-yellow-500' :
+                                      'bg-red-500'
+                                    }`}
+                                    style={{ width: `${Math.min(finalizedApp.finalWeightedScore, 100)}%` }}
+                                  ></div>
+                                </div>
+                                <span className={`font-bold text-sm ${
+                                  finalizedApp.finalWeightedScore >= 80 ? 'text-green-700' :
+                                  finalizedApp.finalWeightedScore >= 60 ? 'text-blue-700' :
+                                  finalizedApp.finalWeightedScore >= 40 ? 'text-yellow-700' :
+                                  'text-red-700'
+                                }`}>
+                                  {finalizedApp.finalWeightedScore.toFixed(2)}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="px-4 py-2 border border-gray-300 text-center">
+                              <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                finalizedApp.sentimentScore > 0 ? 'bg-green-100 text-green-700' :
+                                finalizedApp.sentimentScore < 0 ? 'bg-red-100 text-red-700' :
+                                'bg-gray-100 text-gray-700'
+                              }`}>
+                                {finalizedApp.sentimentScore > 0 ? '+' : ''}{finalizedApp.sentimentScore}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

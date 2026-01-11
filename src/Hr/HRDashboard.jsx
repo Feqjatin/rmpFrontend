@@ -25,7 +25,7 @@ function HrDashboard() {
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
       <div style={{ width: "200px", background: "#f4f4f4", padding: "20px", minHeight: "100vh" }}>
-        <h3>Hr Panel</h3>
+        <h3>HR Panel</h3>
         <hr />
         <br />
         <ul style={{ listStyle: "none", padding: 0 }}>

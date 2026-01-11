@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {getApplicationRounds,deleteInterview,createInterview} from '../api/Interviewer';
-import{ getRoundTemplatesByJobId as getRoundTemplatesByJob,  deleteRoundTemplatesByJobId as deleteRoundTemplate,createRoundTemplatesByJobId as createRoundTemplate } from '../api/Recruiter';
-
+import {getApplicationRounds,deleteInterview,createInterview} from '../Api/Interviewer';
+import{ getRoundTemplatesByJobId as getRoundTemplatesByJob,  deleteRoundTemplatesByJobId as deleteRoundTemplate,createRoundTemplatesByJobId as createRoundTemplate } from '../Api/Recruiter';
+import {Link } from 'react-router-dom';
 function InterviewRoundManager({ applicationId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -214,7 +214,9 @@ function InterviewRoundManager({ applicationId }) {
         <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
           <div>
             <h2 className="text-2xl font-bold text-gray-800">Interview Rounds</h2>
-            <p className="text-sm text-gray-600">Application ID: {applicationId}</p>
+            <Link to={`/application/view/${applicationId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" > 
+            Application ID: {applicationId} 
+                    </Link> 
           </div>
           {!isAddingRound && (
             <button

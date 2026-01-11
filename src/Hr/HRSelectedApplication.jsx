@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getSelectedCandidates } from '../api/Hr';
+import { getSelectedCandidates } from '../Api/Hr';
 
 function HRSelectedApplication({ onViewDetails }) {
   const [loading, setLoading] = useState(false);

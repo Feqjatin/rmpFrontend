@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getAllCandidate, deleteCandidate } from '../api/Recruiter';
+import { getAllCandidate, deleteCandidate } from '../Api/Recruiter';
 import CandidateDetails from './CandidateDetails';
 import CreateCandidate from './CreateCandidate';
-
+import {Link } from 'react-router-dom';
 
  
 const RecruiterCandidate = () => {
@@ -117,7 +117,11 @@ const RecruiterCandidate = () => {
                                 <tbody>
                                     {candidates.map((candidate) => (
                                         <tr key={candidate.candidateId} className="hover:bg-gray-50 transition">
-                                            <td className="px-4 py-2 border border-gray-300">{candidate.candidateId}</td>
+                                            <td className="px-4 py-2 border border-gray-300">
+                                            <Link to={`/candidate/view/${candidate.candidateId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >
+                                            {candidate.candidateId}
+                                            </Link> 
+                                                </td>
                                             <td className="px-4 py-2 border border-gray-300">{candidate.name}</td>
                                             <td className="px-4 py-2 border border-gray-300 max-w-xs truncate">{candidate.email}</td>
                                             <td className="px-4 py-2 border border-gray-300">{candidate.phone}</td>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {deleteRescheduleRequest,createRescheduleRequest,getCandidateRescheduleRequests,getCandidateData,processInvitationResponse} from "../api/Candidate"
-import { getMatchByCandidateId } from '../api/Recruiter';
+import {deleteRescheduleRequest,createRescheduleRequest,getCandidateRescheduleRequests,getCandidateData,processInvitationResponse} from "../Api/Candidate"
+import { getMatchByCandidateId } from '../Api/Recruiter';
 import { MapPin, Briefcase, TrendingUp, FileText, CheckCircle } from 'lucide-react';
-
-
+import { Link } from "react-router-dom";
 function CandidateApplication() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -339,7 +338,9 @@ function CandidateApplication() {
                           {app.applicationStatus}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600">Job ID: {app.jobId}</p>
+                      <Link to={`/candidate/jobApply/${app.jobId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >  
+                      <p >Job ID: {app.jobId}</p>
+                      </Link>
                       <p className="text-sm text-gray-600">
                         Applied: {new Date(app.appliedAt).toLocaleString()}
                       </p>
@@ -499,7 +500,8 @@ function CandidateApplication() {
                     </span>
                     <span className="text-xs text-gray-500 flex items-center gap-1">
                       <Briefcase size={14} />
-                      Job ID: {match.jobId}
+                      <Link to={`/candidate/jobApply/${match.jobId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition">   Job ID: {match.jobId}
+                      </Link>  
                     </span>
                   </div>
                 </div>
@@ -521,15 +523,13 @@ function CandidateApplication() {
                 </div>
               </div>
 
-            
+              {match.status === 'Open' &&
               <div className="flex gap-3 pt-4 border-t border-gray-200">
-                <button className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-sm">
+              <Link to={`/candidate/jobApply/${match.jobId}`} className="p-3 bg-blue-500 text-white rounded-s font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50">
                   View Details
-                </button>
-                <button className="flex-1 px-4 py-2 bg-white border-2 border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors font-medium text-sm">
-                  Apply Now
-                </button>
+              </Link>
               </div>
+             }
             </div>
           ))}
         </div>

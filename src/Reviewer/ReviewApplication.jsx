@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { updateApplicationsStatus } from '../api/Reviewer';
-import { updateApplicationNote } from '../api/Reviewer';
-import {crateApplicationComment} from '../api/forAll';
-import SkillReview from '../component/SkillReview';
-import ApplicationFeedbackHistory from '../component/ApplicationFeedbackHistory';
-import CandidateSkillHistory from '../component/CandidateSkillHistory';
-
+import { updateApplicationsStatus } from '../Api/Reviewer';
+import { updateApplicationNote } from '../Api/Reviewer';
+import {crateApplicationComment} from '../Api/forAll';
+import SkillReview from '../Components/SkillReview';
+import ApplicationFeedbackHistory from '../Components/ApplicationFeedbackHistory';
+import CandidateSkillHistory from '../Components/CandidateSkillHistory';
+import {Link } from 'react-router-dom';
 const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountFor1,skillSet  }) => {
     
     const [status, setStatus] = useState(initialReviewAction.status);
@@ -132,7 +132,7 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
                         </div>
                     )}
                     <iframe
-                        src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+                        src={initialReviewAction.candiateResumePath}
                         title="Candidate Resume"
                         className="w-full h-full border-0 rounded-lg"
                         onLoad={() => setResumeLoading(false)}
@@ -149,13 +149,22 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
                     
                     <div className="mb-4">
                         <p className="text-sm text-gray-500">Application ID</p>
-                        <p className="text-lg font-semibold text-gray-900">{initialReviewAction.applicationId}</p>
+                        <Link to={`/application/view/${initialReviewAction.applicationId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" > 
+                        {initialReviewAction.applicationId}
+                          </Link>
+                    </div>
+                    <div className="mb-4">
+                        <p className="text-sm text-gray-500">Candidate ID</p>
+                        <Link to={`/candidate/view/${initialReviewAction.candidateId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >
+                        {initialReviewAction.candidateId}
+                        </Link>
                     </div>
 
                     <div className="mb-6">
                         <p className="text-sm text-gray-500">Reviewer ID</p>
                         <p className="text-lg font-semibold text-gray-900">{initialReviewAction.reviewerUserId}</p>
                     </div>
+
                     { initialReviewAction.isPublished ?<p className="mb-4 text-blue-600 hover:text-blue-800 font-semibold">Published</p> :<>
                     <h3 className="text-lg font-semibold text-gray-700 mb-3">Take Action</h3>
                     <div className="space-y-3 mb-6">
@@ -194,7 +203,7 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
                         }`}
                         />
 
- 
+                            { initialReviewAction.isPublished ?null:
                             <div className="mt-6">
                                 <h3 className="text-lg font-semibold text-gray-700 mb-3">Application Comment (Public)</h3>
                                <textarea
@@ -208,7 +217,8 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
                                             : 'border-gray-200 bg-gray-100 text-gray-500 cursor-not-allowed'
                                     }`}
                                 />
-                                {!initialReviewAction.isPublished && (
+                            
+                                
                                     <button
                                     onClick={handleSaveComment}
                                     className={`mt-2 w-full text-white text-sm font-semibold rounded-lg shadow focus:outline-none
@@ -219,8 +229,10 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
                                     Save Comment
                                   </button>
                                   
-                                )}
+                                
                             </div>
+ }
+                            { initialReviewAction.isPublished ? null :
                             <SkillReview
                                 jobSkills={skillSet}
                                 applicationId={initialReviewAction.applicationId}
@@ -228,7 +240,7 @@ const ReviewerApplication = ({initialReviewAction ,setPage,countFor1 , setCountF
                                 isPublished={initialReviewAction.isPublished}
                                 stage={"REVIEWER_SKILL_ASSESSMENT"}
                                 role={"reviewer"}
-                                />
+                                />}
                       {!initialReviewAction.isPublished &&  
                     <div className="mt-6 border-t pt-6 space-y-3">
                         <button 

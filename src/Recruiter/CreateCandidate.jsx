@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createCandidate } from '../api/Recruiter';
+import { createCandidate } from '../Api/Recruiter';
 const CreateCandidate = ({ goBack }) => {
     const [formData, setFormData] = useState({
         name: '',

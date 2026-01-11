@@ -54,7 +54,7 @@ export async function crateApplicationComment(val) {
     
 export async function saveSkillAssessments(val) {
   try {
-    console.log("val in api",val);
+   
     const token = Cookies.get("token");
     const response = await fetch(`https://localhost:7084/api/Util/save-skill-assessments`, {
       method: "POST",
@@ -91,7 +91,7 @@ export async function getSkillAssessmentsForCandidate(val) {
       },
       
     });
-   console.log("response",response);
+   
     if (!response.ok) {
       const errorMsg = await response.text();
       return { data: null, msg: errorMsg };
@@ -131,7 +131,54 @@ export async function getFeedbackForApplication(val) {
   }
 }
 
-   
-export async function uploadFileToThirdParty(val) {
-  return {data:"https:123.com"};
+export async function  getCandidate(candidateId) {
+  try {
+     
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Util/getCandidate/`+candidateId, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    return { data:data, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
 }
+export async function getApplication(applicationId) {
+  try {
+     
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Util/getApplication/`+applicationId, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+    return { data:data, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+}
+
+   
+ 

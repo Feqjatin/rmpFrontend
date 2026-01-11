@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {saveSkillAssessments} from '../api/forAll'; 
+import {saveSkillAssessments} from '../Api/forAll'; 
 
 
 const SkillAssessmentRow = ({ skill, assessment, onChange, isPublished }) => {

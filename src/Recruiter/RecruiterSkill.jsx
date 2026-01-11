@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import  {getAllSkills,deleteSkill,createSkill } from "../api/Recruiter";
-import {updateSkill} from "../api/Recruiter";
+import  {getAllSkills,deleteSkill,createSkill } from "../Api/Recruiter";
+import {updateSkill} from "../Api/Recruiter";
 function RecruiterSkill() {
   const [loading, setLoading]=useState(false);
   const [data,setData]=useState([]);

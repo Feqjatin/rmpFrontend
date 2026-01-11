@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getCandidateData ,updateCandidateData} from '../api/Candidate';
+import { getCandidateData ,updateCandidateData} from '../Api/Candidate';
 function CandidateProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -327,24 +327,6 @@ function CandidateProfile() {
                 <p className="text-gray-900">{profileData.profileSummary || 'No summary provided'}</p>
               )}
             </div>
-
-            {isEditing && (
-              <div className="border-t border-gray-200 pt-6">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">Change Password</h3>
-                <div>
-                  <label className="text-sm text-gray-500 block mb-1">New Password</label>
-                  <input
-                    type="password"
-                    name="newPassword"
-                    value={editData.newPassword}
-                    onChange={handleInputChange}
-                    placeholder="Leave blank to keep current password"
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <p className="text-xs text-gray-400 mt-1">Leave blank if you don't want to change your password</p>
-                </div>
-              </div>
-            )}
 
             {isEditing && (
               <div className="flex gap-4 pt-6 border-t border-gray-200">

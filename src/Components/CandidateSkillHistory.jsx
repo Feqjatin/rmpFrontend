@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getSkillAssessmentsForCandidate } from '../api/forAll';
+import { getSkillAssessmentsForCandidate } from '../Api/forAll';
+import {Link } from 'react-router-dom';
 const CandidateSkillHistory = ({ candidateId, applicationId }) => {
     const [allAssessments, setAllAssessments] = useState([]);
     const [filteredAssessments, setFilteredAssessments] = useState([]);
@@ -56,7 +57,10 @@ const CandidateSkillHistory = ({ candidateId, applicationId }) => {
 
     return (
         <div className="p-6 rounded-xl font-sans" style={{ background: "#dce9f2" }}>
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Candidate Skill History</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Candidate Skill History 
+            <Link to={`/candidate/view/${candidateId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >
+                        (view candidate details)
+                        </Link></h2>
             
             
             <div className="flex p-1 bg-gray-200 rounded-lg mb-4">
@@ -85,6 +89,7 @@ const CandidateSkillHistory = ({ candidateId, applicationId }) => {
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Application Id</th>
                                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Skill</th>
                                 <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Years</th>
                                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comment</th>
@@ -95,6 +100,10 @@ const CandidateSkillHistory = ({ candidateId, applicationId }) => {
                         <tbody className="bg-white divide-y divide-gray-200">
                             {filteredAssessments.map(assessment => (
                                 <tr key={assessment.assessmentId} className="hover:bg-gray-50">
+                                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                                   <Link to={`/application/view/${assessment.applicationId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" > 
+                                   {assessment.applicationId}
+                                  </Link> </td>
                                     <td className="px-4 py-3 whitespace-nowrap">
                                         <div className="text-sm font-semibold text-gray-900">{assessment.skillName}</div>
                                         <div className="text-xs text-gray-500">{assessment.stage}</div>

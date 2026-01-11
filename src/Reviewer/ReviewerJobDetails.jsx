@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
  
-import JobPostingCard from '../component/JobPostingCard';
-import { getApplicationsToReview } from '../api/Reviewer';
+import JobPostingCard from '../Components/JobPostingCard';
+import { getApplicationsToReview } from '../Api/Reviewer';
 import { useSelector } from 'react-redux'
-import { updateApplicationsStatus } from '../api/Reviewer';
-import { getJobDetails } from '../api/forAll';
-
+import { updateApplicationsStatus } from '../Api/Reviewer';
+import { getJobDetails } from '../Api/forAll';
+import {Link } from 'react-router-dom';
 
 function ReviewerJobDetails({ jobId, setPage,page,countFor1 , setCountFor1, setSelectedApplicationId ,setSkillSet}) {
   const [loading, setLoading] = useState(false);
@@ -110,7 +110,6 @@ function ReviewerJobDetails({ jobId, setPage,page,countFor1 , setCountFor1, setS
   
   
   const handleBulkAction =  async (status) => {
-   // console.log(`Action: ${status}, Applications: ${selectedApplicationIds.join(', ')}`);
     
     setLoading(true);
     var filtered=[];
@@ -225,7 +224,12 @@ function ReviewerJobDetails({ jobId, setPage,page,countFor1 , setCountFor1, setS
                         />
                       </td>
                       <td className="px-4 py-2 border border-gray-300">{a.isPublished?'Pulished':'Not Published'}</td>
-                      <td className="px-4 py-2 border border-gray-300">{a.applicationId}</td>
+                      <td className="px-4 py-2 border border-gray-300">
+                      <Link to={`/application/view/${a.applicationId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" > 
+                           {a.applicationId}
+                          </Link>
+                       
+                        </td>
                       <td className="px-4 py-2 border border-gray-300">{a.reviewerUserId ?? "N/A"}</td>
                       <td className="px-4 py-2 border border-gray-300">
                       {a.personalNote 

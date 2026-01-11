@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import  {getAllRoles}  from "../api/Admin";
-import { deleteRole } from "../api/Admin";
-import { addRoleFun } from "../api/Admin";
+import  {getAllRoles}  from "../Api/Admin";
+import { deleteRole } from "../Api/Admin";
+import { addRoleFun } from "../Api/Admin";
 import RoleDetails from "./RoleDetails";
 function AdminRole()
 {

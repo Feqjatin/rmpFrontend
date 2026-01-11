@@ -41,7 +41,7 @@ export async function getAllJobsbyUser(userName) {
     }
 
     const data = await response.json();
-    console.log("jobs by user data:", data);
+ 
     return { data, msg: null };
   } catch (error) {
     console.error("get all jobs error:", error);
@@ -51,7 +51,7 @@ export async function getAllJobsbyUser(userName) {
 
 export async function createJob(formData) {
   try {
-    console.log("form data in api job create:", formData);
+ 
     const token = Cookies.get("token");
     const response = await fetch(`https://localhost:7084/api/Recruiter/job-create`, {
       method: "POST",
@@ -77,7 +77,7 @@ export async function createJob(formData) {
 
 export async function updateJob(formData) {
   try {
-    console.log("form data in api:", formData);
+    
     const token = Cookies.get("token");
     const response = await fetch(`https://localhost:7084/api/Recruiter/job-update`, {
       method: "POST",
@@ -360,7 +360,7 @@ export async function getApplicationsByJobId(id) {
       return { data: null, msg: errorMsg };
     }
     const data = await response.json();
-    console.log("applications data:", data);
+   
     return { data, msg: null };
   } catch (error) {
     console.error(" error:", error);
@@ -384,7 +384,7 @@ export async function getMatchByJobId(id) {
       return { data: null, msg: errorMsg };
     }
     const data = await response.json();
-    console.log("matches data:", data);
+   
     return { data, msg: null };
   } catch (error) {
     console.error(" error:", error);
@@ -408,7 +408,7 @@ export async function getMatchByCandidateId(id) {
       return { data: null, msg: errorMsg };
     }
     const data = await response.json();
-    console.log("matches data:", data);
+    
     return { data, msg: null };
   } catch (error) {
     console.error(" error:", error);
@@ -433,7 +433,7 @@ export async function getReviewersByJobId(id) {
       return { data: null, msg: errorMsg };
     }
     const data = await response.json();
-    console.log(" data:", data);
+    
     return { data, msg: null };
   } catch (error) {
     console.error(" error:", error);
@@ -457,7 +457,7 @@ export async function getRoundTemplatesByJobId(id) {
       return { data: null, msg: errorMsg };
     }
     const data = await response.json();
-    console.log("data:", data);
+   
     return { data, msg: null };
   } catch (error) {
     console.error(" error:", error);
@@ -494,7 +494,7 @@ export async function assignReviewerToJob(formData) {
 
 export async function removeReviewerToJob(formData) {
   try {
-    console.log("form data in api  ", formData);
+   
     const token = Cookies.get("token");
     const response = await fetch(`https://localhost:7084/api/Recruiter/dischargeReviewer`, {
       method: "DELETE",
@@ -536,7 +536,7 @@ export async function createRoundTemplatesByJobId(formData) {
       return { data: null, msg: errorMsg };
     }
     var data= await response.json();
-     console.log("created round template response:", data);
+      
     return { data, msg: null };
   } catch (error) {
     console.error(" error:", error);
@@ -612,7 +612,7 @@ export async function getInterviewsByJobId(id) {
       return { data: null, msg: errorMsg };
     }
     const data = await response.json();
-    console.log("data:", data);
+ 
     return { data, msg: null };
   } catch (error) {
     console.error(" error:", error);
@@ -696,4 +696,52 @@ export async function bulkCreateApplications(applicationData) {
   }
 }
 
+export async function getFinalApplication(id) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/job/final-evaluation/`+id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      
+    });
 
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+    const data = await response.json();
+   
+    return { data, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+}
+
+export async function createBulkSelect(data) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Recruiter/bulkCandidateSelect`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+ 
+    
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+     
+    return { data:response, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {updateCandidateEducationData,deleteCandidateEducationData,addCandidateEducationData,getCandidateData} from '../api/Candidate'
+import {updateCandidateEducationData,deleteCandidateEducationData,addCandidateEducationData,getCandidateData} from '../Api/Candidate'
 function CandidateEducation() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();

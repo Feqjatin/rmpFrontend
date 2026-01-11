@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { updateSelectedCandidate, generateOfferLetter, getCandidateDocuments } from '../api/Hr';
-
+import { updateSelectedCandidate, generateOfferLetter, getCandidateDocuments } from '../Api/Hr';
+import {Link } from 'react-router-dom';
 function HRSelectedApplicationDetail({ candidate, onBack, onViewDocument }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -132,7 +132,7 @@ function HRSelectedApplicationDetail({ candidate, onBack, onViewDocument }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-sm text-gray-500 block mb-1">Candidate ID</label>
-              <p className="text-lg font-semibold text-gray-900">{candidate.candidateId}</p>
+              <Link to={`/candidate/view/${candidate.candidateId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" > {candidate.candidateId}</Link>
             </div>
 
             <div>
@@ -147,7 +147,9 @@ function HRSelectedApplicationDetail({ candidate, onBack, onViewDocument }) {
 
             <div>
               <label className="text-sm text-gray-500 block mb-1">Application ID</label>
-              <p className="text-lg font-semibold text-gray-900">{candidate.applicationId}</p>
+              <Link to={`/application/view/${candidate.applicationId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >  
+             {candidate.applicationId}
+              </Link>
             </div>
 
             <div>

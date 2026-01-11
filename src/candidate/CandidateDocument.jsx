@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {createCandidateDocument,deleteCandidateDocument,getCandidateData} from "../api/Candidate"
-import {uploadFileToThirdParty} from "../api/forAll"
+import {createCandidateDocument,deleteCandidateDocument,getCandidateData} from "../Api/Candidate"
+ 
 
 function CandidateDocument() {
   const [loading, setLoading] = useState(false);
@@ -51,25 +51,11 @@ function CandidateDocument() {
      
     const formData = new FormData();
     formData.append('file', selectedFile);
-    
-    const uploadResponse = await uploadFileToThirdParty(formData);
-    
-    if (!uploadResponse || !uploadResponse.data) {
-      setError("Failed to upload file");
-      setLoading(false);
-      return;
-    }
+    formData.append('applicationId', applicationId || 0);
+    formData.append('documentType', documentType);
 
-    const filePath = uploadResponse.data;
-
-    
-    const documentData = {
-      applicationId: applicationId ? parseInt(applicationId) : 0,
-      documentType: documentType,
-      filePath: filePath
-    };
-
-    const response = await createCandidateDocument(documentData,id);
+   
+    const response = await createCandidateDocument(formData,id);
 
     if (!response || !response.data) {
       setError(response?.msg || "Failed to save document");
@@ -87,10 +73,6 @@ function CandidateDocument() {
   };
 
   const handleDelete = async (documentId) => {
-    if (!window.confirm("Are you sure you want to delete this document?")) {
-      return;
-    }
-
     setLoading(true);
     setError(null);
 
@@ -161,23 +143,20 @@ function CandidateDocument() {
                   <option value="">Select document type</option>
                   <option value="Resume">Resume</option>
                   <option value="Cover Letter">Cover Letter</option>
-                  <option value="Certificate">Certificate</option>
-                  <option value="Transcript">Transcript</option>
-                  <option value="Portfolio">Portfolio</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-sm text-gray-500 block mb-1">
-                  Application ID <span className="text-xs text-gray-400">(Optional - Leave 0 for general documents)</span>
+                  Application ID  
                 </label>
                 <select
                   value={applicationId}
                   onChange={(e) => setApplicationId(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  
+                   
                   {candidateData?.jobApplications.map((app) => (
                     <option key={app.applicationId} value={app.applicationId}>
                       Application #{app.applicationId} - Status: {app.applicationStatus}
@@ -244,6 +223,12 @@ function CandidateDocument() {
                     </div>
                     <p className="text-sm text-gray-600 mb-2">
                       Uploaded: {new Date(doc.uploadedAt).toLocaleString()}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-2">
+                      Comment : {doc.comment || 'N/A'}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-2">
+                      Verification Status: {doc.status|| 'N/A'}
                     </p>
                     <a
                       href={doc.filePath}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCandidateById, updateCandidate } from '../api/Recruiter';
+import { getCandidateById, updateCandidate } from '../Api/Recruiter';
 
 const CandidateDetails = ({ candidateId, goBack }) => {
     const [isEditing, setIsEditing] = useState(false);

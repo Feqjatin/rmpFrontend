@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import {makeNewUser} from "./api/Auth";
+import {makeNewUser} from "../Api/Auth";
 import { Navigate, useNavigate } from "react-router-dom";
-import {makeNewCandidate} from "./api/Auth";
+import {makeNewCandidate} from "../Api/Auth";
 function SignUp() {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     passwordHash: "",
+    systemPassword: "",
     phone: "",
   });
-  const [state,setState]=useState("candidate");
+  const [state,setState]=useState("user");
   const [error,setError]=useState();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordUser, setShowPasswordUser] = useState(false);
   const [candidateFormData, setCandidateFormData] = useState({
     Name :"",
     Email :"",
@@ -124,8 +127,9 @@ function SignUp() {
             <label className="block text-sm font-medium text-gray-700">
               Password
             </label>
+            <div className="relative mt-1">
             <input
-              type="password"
+              type={showPasswordUser ? "text" : "password"}
               name="passwordHash"
               value={formData.passwordHash}
               onChange={handleChange}
@@ -133,7 +137,42 @@ function SignUp() {
               className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             />
+              <button
+                type="button"
+                onClick={() => setShowPasswordUser(!showPasswordUser)}
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+              >
+                {showPasswordUser ? "👁️" : <img src="./closeEye.png" width={'25px'} height={'25px'}></img>}
+              </button>
+            </div>
           </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              System Password (which you will get from admin for verification)
+            </label>
+
+            <div className="relative mt-1">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="systemPassword"
+                value={formData.systemPassword}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                className="w-full p-2 pr-10 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                required
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? "👁️" :<img src="./closeEye.png" width={'25px'} height={'25px'}></img>}
+              </button>
+            </div>
+          </div>
+
 
           
           <div>
@@ -198,8 +237,9 @@ function SignUp() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 after:content-['*'] after:ml-1 after:text-red-500">Password</label>
+                  <div className="relative mt-1">
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="PasswordHash"
                     value={candidateFormData.PasswordHash}
                     onChange={handleChange2}
@@ -207,7 +247,15 @@ function SignUp() {
                     className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     required
                   />
-                </div>
+                   <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? "👁️" :<img src="./closeEye.png" width={'25px'} height={'25px'}></img>}
+              </button>
+              </div>
+            </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 after:content-['*'] after:ml-1 after:text-red-500">Phone</label>

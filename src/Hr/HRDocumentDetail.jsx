@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { updateDocument } from '../api/Hr';
-
+import { updateDocument } from '../Api/Hr';
+import {Link } from 'react-router-dom';
 function HRDocumentDetail({ document, onBack }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();

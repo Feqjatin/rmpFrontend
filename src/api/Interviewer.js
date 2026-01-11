@@ -17,7 +17,7 @@ export async function getAllInterview(username) {
       return { data: null, msg: errorMsg };
     }
     const data = await response.json();
-    console.log(data);
+   
     return { data, msg: null };
   } catch (error) {
     console.error("error:", error);
@@ -165,7 +165,7 @@ export async function updateRoundScore(interviewId, scoreData) {
       return { data: null, msg: errorMsg };
     }
      var v=await response.json();
-     console.log("response:", v);
+    
     return { data:response, msg: null };
   } catch (error) {
     console.error("error:", error);
@@ -225,7 +225,7 @@ export async function deleteInterview(interviewId) {
 export async function createInterview(interviewData) {
   try {
     const token = Cookies.get("token");
-    console.log("interviewData:", interviewData);
+     
     const response = await fetch(`https://localhost:7084/api/Interviewer/schedule`, {
       method: "POST",
       headers: {

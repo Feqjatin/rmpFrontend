@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react'
-import './App.css'
-import RoutePage from './RoutePage.jsx'
+import RoutePage from './Pages/RoutePage.jsx'
+import {Link } from 'react-router-dom';
 function App() {
-  
-
   return (
     <>
-    
-        <RoutePage />
+       <RoutePage />
     </>
   );
 }

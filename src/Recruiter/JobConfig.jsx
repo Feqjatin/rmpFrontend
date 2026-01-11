@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { X, Plus, Edit2, Trash2, Save } from 'lucide-react';
-import {getRoundTemplatesByJobId,getReviewersByJobId,assignReviewerToJob,removeReviewerToJob,createRoundTemplatesByJobId,deleteRoundTemplatesByJobId,updateRoundTemplatesByJobId} from '../api/Recruiter';
-import {getAllUsers} from '../api/Admin';
+import {getRoundTemplatesByJobId,getReviewersByJobId,assignReviewerToJob,removeReviewerToJob,createRoundTemplatesByJobId,deleteRoundTemplatesByJobId,updateRoundTemplatesByJobId} from '../Api/Recruiter';
+import {getAllUsers} from '../Api/Admin';
 
 function JobConfig({ jobId }) {
 

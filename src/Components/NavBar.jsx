@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "./redux/userReducer";
+import { logout } from "../Redux/userReducer";
 
 export default function NavBar({ count ,setCount}) {
   const [logined, setLogined] = useState(false);
@@ -14,7 +14,6 @@ export default function NavBar({ count ,setCount}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    
     if(user && user !== "Unknown")setLogined(!!user);
   }, [user, count]);
 
@@ -28,13 +27,7 @@ export default function NavBar({ count ,setCount}) {
   };
 
   const getProfileImage = () => {
-    if (!user || user=='Unknown') return "/assets/user.png";
-
-    const lastChar = user.trim().slice(-1).toUpperCase();
-    const isLetter = /^[A-Z]$/.test(lastChar);
-    const imageFile = isLetter ? lastChar : "A";
-
-    return `/assets/${imageFile}.png`;
+    return user && user !== "Unknown" ? '../profile.png': '../circle.png';
   };
 
   return (
@@ -68,6 +61,14 @@ export default function NavBar({ count ,setCount}) {
               
               {open && (
                 <div className="absolute right-0 top-14 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                  <Link
+                        key={-1}
+                        to={'/recoverAccount'}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setOpen(false)}
+                      >
+                       - Change Password -
+                      </Link>
                   {roles?.length > 0 ? (
                     roles.map((role) => (
                       <Link

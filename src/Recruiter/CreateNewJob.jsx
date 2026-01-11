@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getAllSkills } from '../api/Recruiter';
-import { createJob } from '../api/Recruiter';
+import { getAllSkills } from '../Api/Recruiter';
+import { createJob } from '../Api/Recruiter';
 import { useSelector } from 'react-redux';
 
 const CreateNewJob = ({ goBack,refreshList }) => {

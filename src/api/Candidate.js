@@ -18,7 +18,31 @@ export async function getCandidateData(id) {
     }
 
     const data = await response.json();
-    console.log("candidate data:", data);
+   
+    return { data, msg: null };
+  } catch (error) {
+    console.error("error:", error);
+    throw error;
+  }
+}
+
+export async function getJobData(id,candidateId) {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`https://localhost:7084/api/Candidate/getJob/`+id+'/'+candidateId, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorMsg = await response.text();
+      return { data: null, msg: errorMsg };
+    }
+
+    const data = await response.json();
+  
     return { data, msg: null };
   } catch (error) {
     console.error("error:", error);
@@ -28,7 +52,7 @@ export async function getCandidateData(id) {
 
 export async function updateCandidateData(formData,id) {
     try {
-      console.log("form data in api:", formData);
+       
       const token = Cookies.get("token");
       const response = await fetch(`https://localhost:7084/api/Candidate/profile/`+id, {
         method: "PUT",
@@ -55,7 +79,7 @@ export async function updateCandidateData(formData,id) {
 
   export async function updateCandidateEducationData(formData,id) {
     try {
-      console.log("form data in api:", formData);
+     
       const token = Cookies.get("token");
       const response = await fetch(`https://localhost:7084/api/Candidate/education/`+id, {
         method: "PUT",
@@ -106,7 +130,7 @@ export async function updateCandidateData(formData,id) {
 
   export async function addCandidateEducationData(formData,id) {
     try {
-      console.log("form data in api:", formData);
+      
       const token = Cookies.get("token");
       const response = await fetch(`https://localhost:7084/api/Candidate/education/`+id, {
         method: "POST",
@@ -132,7 +156,7 @@ export async function updateCandidateData(formData,id) {
 
   export async function updateCandidateExperienceData(formData,id) {
     try {
-      console.log("form data in api:", formData);
+      
       const token = Cookies.get("token");
       const response = await fetch(`https://localhost:7084/api/Candidate/experience/`+id, {
         method: "PUT",
@@ -183,7 +207,7 @@ export async function updateCandidateData(formData,id) {
 
   export async function addCandidateExperienceData(formData,id) {
     try {
-      console.log("form data in api:", formData);
+    
       const token = Cookies.get("token");
       const response = await fetch(`https://localhost:7084/api/Candidate/experience/`+id, {
         method: "POST",
@@ -235,15 +259,15 @@ export async function updateCandidateData(formData,id) {
 
   export async function createCandidateDocument(formData,id) {
     try {
-      console.log("form data in api:", formData);
+      
       const token = Cookies.get("token");
       const response = await fetch(`https://localhost:7084/api/Candidate/document/`+id, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: formData,
       });
   
       if (!response.ok) {
@@ -285,7 +309,7 @@ export async function updateCandidateData(formData,id) {
 
   export async function updateCandidateSkill(formData,id) {
     try {
-      console.log("form data in api:", formData);
+      
       const token = Cookies.get("token");
       const response = await fetch(`https://localhost:7084/api/Candidate/skill/`+id, {
         method: "POST",
@@ -340,7 +364,7 @@ export async function updateCandidateData(formData,id) {
 
   export async function createRescheduleRequest(formData,id) {
     try {
-      console.log("form data in api:", formData);
+      
       const token = Cookies.get("token");
       const response = await fetch(`https://localhost:7084/api/Candidate/reschedule-request?candidateId=`+id, {
         method: "POST",
@@ -453,6 +477,32 @@ export async function getCandidateRescheduleRequests(id) {
           Authorization: `Bearer ${token}`,
         } ,
         body: JSON.stringify(formData),
+      });
+  
+      if (!response.ok) {
+        const errorMsg = await response.text();
+        return { data: null, msg: errorMsg ||'failed to process invitation response' };
+      }
+  
+     
+      return { data:response, msg: null };
+    } catch (error) {
+      console.error("error:", error);
+      throw error;
+    }
+  }
+
+  export async function createJobApply(jobId,candidateId) {
+    try {
+  
+      const token = Cookies.get("token");
+      const response = await fetch(`https://localhost:7084/api/Candidate/jobApply/`+jobId+'/'+candidateId, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        } ,
+       
       });
   
       if (!response.ok) {

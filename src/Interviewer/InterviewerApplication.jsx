@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import SkillReview from '../component/SkillReview';
-import { crateApplicationComment } from '../api/forAll';
-import JobPostingCard from '../component/JobPostingCard';
-import ApplicationFeedbackHistory from '../component/ApplicationFeedbackHistory';
-import CandidateSkillHistory from '../component/CandidateSkillHistory';
-import {updateInterviewSchedule,addInterviewerToInterview, removeInterviewerFromInterview, updateRoundScore,}from '../api/Interviewer'
-import {getAllUsers} from '../api/Admin'
+import SkillReview from '../Components/SkillReview';
+import { crateApplicationComment } from '../Api/forAll';
+import JobPostingCard from '../Components/JobPostingCard';
+import ApplicationFeedbackHistory from '../Components/ApplicationFeedbackHistory';
+import CandidateSkillHistory from '../Components/CandidateSkillHistory';
+import {updateInterviewSchedule,addInterviewerToInterview, removeInterviewerFromInterview, updateRoundScore,}from '../Api/Interviewer'
+import {getAllUsers} from '../Api/Admin'
 import InterviewRoundManager from './InterviewRoundManager';
-
+import {Link } from 'react-router-dom';
 function InterviewerApplication({data, setPage, refresh}) {
   const [resumeLoading, setResumeLoading] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -212,7 +212,7 @@ function InterviewerApplication({data, setPage, refresh}) {
               </div>
             )}
             <iframe
-              src={data.candidateInfo.resumePath || "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"}
+              src={data.candidateInfo.resumePath }
               title="Candidate Resume"
               className="w-full h-full border-0 rounded-lg"
               onLoad={() => setResumeLoading(false)}
@@ -229,9 +229,17 @@ function InterviewerApplication({data, setPage, refresh}) {
             
             <div>
               <p className="text-sm text-gray-500">Application ID</p>
-              <p className="text-lg font-semibold text-gray-900">{data.applicationId}</p>
+              <Link to={`/application/view/${data.applicationId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >  
+              {data.applicationId}
+              </Link>
             </div>
             
+            <div>
+              <p className="text-sm text-gray-500">Candidate ID</p>
+              <Link to={`/candidate/view/${data.candidateInfo.candidateId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" > 
+              {data.candidateInfo.candidateId}  
+              </Link>
+            </div>
             <div>
               <p className="text-sm text-gray-500">Interview ID</p>
               <p className="text-lg font-semibold text-gray-900">{data.interviewId}</p>

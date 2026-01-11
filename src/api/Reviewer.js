@@ -54,7 +54,7 @@ export async function getJobsToReview(username) {
 
   export async function updateApplicationsStatus(val) {
     try {
-      console.log("updateApplicationsStatus payload:", val);
+     
       const token = Cookies.get("token");
       const response = await fetch(`https://localhost:7084/api/Reviewer/bulk-update-status`, {
         method: "Post",
@@ -64,7 +64,7 @@ export async function getJobsToReview(username) {
         },
         body: JSON.stringify(val), 
       });
-      console.log("response",response);
+    
       if (!response.ok) {
         const errorMsg = await response.text();
         return { data: null, msg: errorMsg };
@@ -78,7 +78,7 @@ export async function getJobsToReview(username) {
   }
   export async function updateApplicationNote(val) {
     try {
-      console.log("updateApplicationsStatus payload:", val);
+ 
       const token = Cookies.get("token");
       const response = await fetch(`https://localhost:7084/api/Reviewer/update-note`, {
         method: "Post",
@@ -88,7 +88,7 @@ export async function getJobsToReview(username) {
         },
         body: JSON.stringify(val), 
       });
-      console.log("response",response);
+      
       if (!response.ok) {
         const errorMsg = await response.text();
         return { data: null, msg: errorMsg };

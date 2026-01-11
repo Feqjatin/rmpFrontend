@@ -18,7 +18,7 @@ export async function getAllUsers() {
       }
   
       const data = await response.json(); 
-      console.log(data);
+     
       return data;
   
     } catch (error) {
@@ -43,8 +43,7 @@ export async function getAllUsers() {
        return {data:null,msg:errorMsg}
       }
   
-      const data = await response.json(); 
-      console.log(data);
+      const data = await response.json();
       return data;
   
     } catch (error) {
@@ -127,7 +126,6 @@ export async function getAllUsers() {
       }
   
       const data = await response.json(); 
-      console.log(data) 
       return {data:data,msg:null};
   
     } catch (error) {
@@ -185,7 +183,7 @@ export async function getAllUsers() {
       }
   
       const data = await response.json(); 
-      console.log(data) 
+   
       return {data:data,msg:null};
   
     } catch (error) {

@@ -27,7 +27,7 @@ export async function getSelectedCandidates(username) {
 export async function updateSelectedCandidate(username, jobCandidateSelectedId, updateData) {
   try {
     const token = Cookies.get("token");
-    console.log("Updating candidate:", jobCandidateSelectedId, updateData, username);
+   
     const response = await fetch(`https://localhost:7084/api/Hr/job-candidate-selected?id=${jobCandidateSelectedId}&username=${username}`, {
       method: "PUT",
       headers: {

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { getAllSkills } from '../api/Recruiter';  
-import { updateJob } from '../api/Recruiter';
-import { deleteJob  } from '../api/Recruiter';
+import { getAllSkills } from '../Api/Recruiter';  
+import { updateJob } from '../Api/Recruiter';
+import { deleteJob  } from '../Api/Recruiter';
 import  ApplicationForJob from './ApplicationForJob';
 import  JobConfig from './JobConfig';
 import { useNavigate } from 'react-router-dom';
+import {Link } from 'react-router-dom';
 const JobView = ({ job, goBack ,refreshList}) => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
@@ -372,6 +373,9 @@ const JobView = ({ job, goBack ,refreshList}) => {
             <li key={candidate.candidateId} className="mt-4 p-4 border border-green-300 rounded-lg bg-green-50">
               <p className="text-green-700">Name: {candidate.candidateName}</p>
               <p className="text-green-700">Email: {candidate.candidateEmail}</p>
+              <Link to={`/candidate/view/${candidate.candidateId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >
+                         - see more
+               </Link>
             </li>
           ))}
           </ul>

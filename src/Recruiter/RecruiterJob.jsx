@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllJobsbyUser } from "../api/Recruiter";
+import { getAllJobsbyUser } from "../Api/Recruiter";
 import { useSelector } from "react-redux";
 import JobView from "./JobView";
 import CreateNewJob from "./CreateNewJob";
@@ -100,7 +100,7 @@ function RecruiterJob() {
                 >
                   <div className="flex items-center mb-4">
                     <img
-                      src="/assets/B.png"
+                       src='../hiring.png'
                       alt="Company Logo"
                       className="w-16 h-16 rounded-full mr-4 border-2 border-gray-200"
                     />

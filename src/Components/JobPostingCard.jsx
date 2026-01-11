@@ -2,7 +2,7 @@
 import React from 'react';
 import { useEffect } from 'react';
  import { useState } from 'react';
- import { getJobDetails } from '../api/forAll';
+ import { getJobDetails } from '../Api/forAll';
 
  
  const LocationPinIcon = () => (
@@ -61,8 +61,7 @@ const JobPostingCard = ({ jobData}) => {
       <div className="flex items-center space-x-4">
         <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border">
           <img 
-            src={`https://placehold.co/64x64/E2E8F0/4A5568?text=Logo`} 
-            alt="Company Logo"
+             src='../hiring.png'
             className="rounded-lg"
           />
         </div>

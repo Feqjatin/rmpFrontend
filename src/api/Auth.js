@@ -16,7 +16,7 @@ export  async function loginUser(formData) {
       }
   
       const data = await response.json(); 
-      console.log(data.userRoles);
+     
       Cookies.set("token", data.token, { expires: 7 }); 
       return {data:data,msg:null};
   
@@ -26,6 +26,54 @@ export  async function loginUser(formData) {
     }
     
   }
+  export  async function sendOTP(formData) {
+    try {
+    
+      const response = await fetch(`https://localhost:7084/api/first/sendOTP`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),  
+      });
+  
+      if (!response.ok) {
+        const errorMsg = await response.text();
+       return {data:null,msg:errorMsg}
+      }
+      
+      return {data:response,msg:null};
+  
+    } catch (error) {
+      console.error("error:", error);
+      throw error;
+    }
+  }
+
+  export  async function resetPassword(formData) {
+    try {
+   
+      const response = await fetch(`https://localhost:7084/api/first/resetPassword`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),  
+      });
+  
+      if (!response.ok) {
+        const errorMsg = await response.text();
+       return {data:null,msg:errorMsg}
+      }
+      
+      return {data:response,msg:null};
+  
+    } catch (error) {
+      console.error("error:", error);
+      throw error;
+    }
+  }
+  
   export  async function loginCandidate(formData) {
     try {
       const response = await fetch(`https://localhost:7084/api/first/loginCandidate`, {
@@ -69,7 +117,7 @@ export  async function loginUser(formData) {
       }
   
       const data = await response.json(); 
-      console.log(data) 
+ 
       return {data:data,msg:null};
   
     } catch (error) {
@@ -96,7 +144,7 @@ export  async function loginUser(formData) {
       }
   
       const data = await response.json(); 
-      console.log(data) 
+    
       return {data:data,msg:null};
   
     } catch (error) {

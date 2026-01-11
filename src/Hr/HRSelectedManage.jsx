@@ -5,7 +5,7 @@ import HRDocumentDetail from './HRDocumentDetail';
 
 
 function HRSelectedManage() {
-  const [page, setPage] = useState(1); // 1: List, 2: Details, 3: Document Detail
+  const [page, setPage] = useState(1);  
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [selectedDocument, setSelectedDocument] = useState(null);
 

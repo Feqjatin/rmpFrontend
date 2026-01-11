@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getFeedbackForApplication } from '../api/forAll';
-
+import { getFeedbackForApplication } from '../Api/forAll';
+import {Link } from 'react-router-dom';
 const ApplicationFeedbackHistory = ({ applicationId }) => {
     const [feedbacks, setFeedbacks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -37,7 +37,10 @@ const ApplicationFeedbackHistory = ({ applicationId }) => {
 
     return (
         <div className="p-6 rounded-xl font-sans" style={{ background: "#dce9f2" }}>
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Application Feedback</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Application Feedback 
+            <Link to={`/application/view/${applicationId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" > 
+            (View Application)
+                          </Link></h2>
              
             {loading && <p className="text-center text-blue-600 py-4">Loading feedback...</p>}
             {error && <p className="text-center text-red-600 py-4">{error}</p>}

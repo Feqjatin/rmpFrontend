@@ -1,8 +1,8 @@
 import React, { use, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getAllInterview } from '../api/Interviewer';
+import { getAllInterview } from '../Api/Interviewer';
 import InterviewerApplication from './InterviewerApplication';
- 
+import {Link } from 'react-router-dom';
 
 function InterviewerManage() {
   const [loading, setLoading] = useState(false);
@@ -95,6 +95,7 @@ function InterviewerManage() {
               <table className="min-w-full table-auto border-collapse border border-gray-300">
                 <thead className="bg-gray-100">
                   <tr>
+                  <th className="px-4 py-2 border border-gray-300">Application Id</th>
                     <th className="px-4 py-2 border border-gray-300">job title</th>
                     <th className="px-4 py-2 border border-gray-300">candidate name</th>
                     <th className="px-4 py-2 border border-gray-300">Date-Time</th>
@@ -108,8 +109,18 @@ function InterviewerManage() {
                 <tbody>
                   {filteredData.map((a) => ( 
                     <tr key={a.interviewId} >
+                      <td className="px-4 py-2 border border-gray-300 text-center">
+                        <Link to={`/application/view/${a.applicationId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" > 
+                     {a.applicationId}
+                    </Link>
+                    </td>
                    <td key={a.id} className="px-4 py-2 border border-gray-300 text-center">{a.jobInfo.title}</td>
-                   <td className="px-4 py-2 border border-gray-300 text-center">{a.candidateInfo.name}</td>
+                   <td className="px-4 py-2 border border-gray-300 text-center">
+                   <Link to={`/candidate/view/${a.candidateInfo.candidateId}`} className="text-blue-600 hover:text-blue-800 hover:underline transition" >
+                    {a.candidateInfo.name}
+                    </Link> 
+                  
+                    </td>
                      <td className="px-4 py-2 border border-gray-300 text-center">
                         {new Date(a.scheduledStartTime).toLocaleString()} - 
                         {new Date(a.scheduledEndTime).toLocaleString()}

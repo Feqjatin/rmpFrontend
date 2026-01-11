@@ -1,6 +1,6 @@
 import { use, useEffect, useState } from "react";
-import  {getAllUsers}  from "../api/Admin";
-import { deleteUser } from "../api/Admin";
+import  {getAllUsers}  from "../Api/Admin";
+import { deleteUser } from "../Api/Admin";
 function AdminUsers()
 {   
     const [loading, setLoading]=useState(false);

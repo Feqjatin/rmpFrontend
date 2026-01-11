@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { getAllUserBYRole } from "../api/Admin";
-import { deleteUserToRole } from "../api/Admin";
-import { getAllUsers } from "../api/Admin";
-import { assignRole } from "../api/Admin";
+import { getAllUserBYRole } from "../Api/Admin";
+import { deleteUserToRole } from "../Api/Admin";
+import { getAllUsers } from "../Api/Admin";
+import { assignRole } from "../Api/Admin";
 function RoleDetails({ role, setSeeMoreRoleId}) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);

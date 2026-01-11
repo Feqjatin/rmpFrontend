@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {loginUser,loginCandidate} from "./api/Auth";
-import {login,print} from "./redux/userReducer"
+import {loginUser,loginCandidate} from "../Api/Auth";
+import {login,print} from "../Redux/userReducer"
 import { useSelector, useDispatch } from 'react-redux'
 
 function Login(props) {
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [candidateFormData, setCandidateFormData] = useState({
@@ -15,6 +15,8 @@ function Login(props) {
   });
   const [state, setState] = useState("user");
   const user= useSelector((state) => state.user.userName);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordUser, setShowPasswordUser] = useState(false);
   const roles= useSelector((state) => state.user.roles);
   const [error,setError]=useState();
   const dispatch = useDispatch();
@@ -80,7 +82,7 @@ function Login(props) {
                 
             }
             else{
-             setError(response.msg);
+             setError("something went wrong");
             }
         }
     )();
@@ -102,10 +104,10 @@ function Login(props) {
             </label>
             <input
               type="text"
-              name="username"
-              value={formData.username}
+              name="email"
+              value={formData.email}
               onChange={handleChange}
-              placeholder="Enter your username"
+              placeholder="Enter your Email"
               className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             />
@@ -116,8 +118,9 @@ function Login(props) {
             <label className="block text-sm font-medium text-gray-700">
               Password
             </label>
+            <div className="relative mt-1">
             <input
-              type="password"
+              type={showPasswordUser ? "text" : "password"}
               name="password"
               value={formData.password}
               onChange={handleChange}
@@ -125,6 +128,14 @@ function Login(props) {
               className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             />
+             <button
+                type="button"
+                onClick={() => setShowPasswordUser(!showPasswordUser)}
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+              >
+                {showPasswordUser ? "👁️" :<img src="./closeEye.png" width={'25px'} height={'25px'}></img>}
+              </button>
+              </div>
           </div>
 
           
@@ -160,8 +171,9 @@ function Login(props) {
             <label className="block text-sm font-medium text-gray-700">
               Password
             </label>
+            <div className="relative mt-1">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               value={candidateFormData.password}
               onChange={handleChange2}
@@ -169,6 +181,14 @@ function Login(props) {
               className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             />
+             <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? "👁️" :<img src="./closeEye.png" width={'25px'} height={'25px'}></img>}
+              </button>
+              </div>
           </div>
 
           
@@ -194,9 +214,17 @@ function Login(props) {
         </p>) }
 
         <p className="text-center text-sm text-gray-500 mt-4">
-        {state=="user"?(<button className="text-blue-600 hover:underline" onClick={()=>setState("candidate")} >For Candidate</button>):(<button className="text-blue-600 hover:underline" onClick={()=>setState("user")}>For User</button>) }
+        {state=="user"?(<button className="text-blue-600 hover:underline" onClick={()=>setState("candidate")} >login For Candidate</button>):(<button className="text-blue-600 hover:underline" onClick={()=>setState("user")}> login For User</button>) }
+        </p>
+
+        <p className="text-center text-sm text-gray-500 mt-4">
+          Forgot Password?
+          <a href="/recoverAccount" className="text-blue-600 hover:underline">
+            Recover Account
+          </a>
         </p>
       </div>
+     
     </div>
   );
 }
