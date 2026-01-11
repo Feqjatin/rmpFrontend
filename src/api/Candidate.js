@@ -18,7 +18,7 @@ export async function getCandidateData(id) {
     }
 
     const data = await response.json();
-   
+     console.log("candidate data:",data);
     return { data, msg: null };
   } catch (error) {
     console.error("error:", error);

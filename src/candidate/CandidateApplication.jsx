@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {deleteRescheduleRequest,createRescheduleRequest,getCandidateRescheduleRequests,getCandidateData,processInvitationResponse} from "../Api/Candidate"
-import { getMatchByCandidateId } from '../Api/Recruiter';
+import {deleteRescheduleRequest,createRescheduleRequest,getCandidateRescheduleRequests,getCandidateData,processInvitationResponse} from "../Api/Candidate";
 import { MapPin, Briefcase, TrendingUp, FileText, CheckCircle } from 'lucide-react';
 import { Link } from "react-router-dom";
 function CandidateApplication() {
@@ -26,7 +25,7 @@ function CandidateApplication() {
   useEffect(() => {
     fetchApplicationData();
     fetchRescheduleRequests();
-    fetchMatches();
+     
   }, []);
 
   const fetchApplicationData = async () => {
@@ -38,24 +37,13 @@ function CandidateApplication() {
       setError("Failed to load applications");
     } else {
       setApplications(response.data.jobApplications || []);
+      setMatches(response.data.jobMatch|| []);
       setError(null);
     }
     setLoading(false);
   };
  
-  const fetchMatches = async () => {
-    setLoading(true);
-    
-    const response = await getMatchByCandidateId(id);
   
-    if (!response || !response.data) {
-      setError("Failed to load matches");
-    } else {
-      setMatches(response.data || []);
-      setError(null);
-    }
-    setLoading(false);
-  }
   const fetchRescheduleRequests = async () => {
     const response = await getCandidateRescheduleRequests(id);
   
